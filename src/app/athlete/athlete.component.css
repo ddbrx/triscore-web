@@ -1,0 +1,58 @@
+.athlete-details-container {
+  position: relative;
+  overflow: auto;
+}
+
+.athlete-details-section {
+  width: 80%;
+  height: 200px;
+  margin: auto;
+  padding: 10px;
+}
+
+.athlete-details-summary {
+  width: 20%;
+  padding-top: 5%;
+  position: relative;
+  float: left;
+}
+
+.athlete-details-plot {
+  margin-left: 20%;
+  padding-top: 2%;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.athlete-history-table {
+  text-align: left;
+  width: 100%;
+}
+
+.athlete-history-table tr:nth-child(2n+1) {
+  background: #e8eaeb;
+}
+
+.athlete-history-table th {
+  background: #bfc2c4;
+}
+
+.athlete-history-table td, .athlete-history-table th {
+  border-width: 0px;
+  padding: 0.4em;
+  font-size: 0.9em;
+  text-align: left;
+  overflow: hidden;
+}
+
+.score-increase {
+  color: green;
+}
+
+.score-decrease {
+  color: red;
+}

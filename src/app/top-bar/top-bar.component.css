@@ -1,0 +1,36 @@
+.mat-toolbar {
+    border-bottom: solid 1px #ca2100;
+    transition: height 200ms ease-in;
+}
+
+.logo {
+    /* font-weight: lighter; */
+    font-size: 24px;
+    border-radius: 6px;
+    border-width: 1px;
+    background-color: white;
+    padding: 6px 6px;
+    /* border: 2px solid white; */
+    border: 2px solid #db3c3f;
+}
+
+.logo-letters {
+    color: #db4c3f;
+}
+
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+
+.toolbar-tab {
+    padding: 0 14px;
+    font-weight: lighter;
+    font-size: 18px;
+    color: white;
+}
+
+.mat-toolbar {
+    width: 100vw;
+    height: 45px;
+    background-color: #db4c3f;
+}
