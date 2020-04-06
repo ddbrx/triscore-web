@@ -1,0 +1,146 @@
+
+table {
+    width: 100%;
+  }
+
+  .races-container {
+    /* width: 922px; */
+    margin: auto;
+  }
+
+  .races-table-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 100px;
+  }
+
+  .mat-table {
+    text-align: left;
+    overflow: auto;
+    max-height: 300px;
+  }
+
+  .mat-column-name {
+    max-width: 150px;
+    text-overflow: ellipsis;
+  }
+
+  .mat-column-country {
+    max-width: 100px;
+    text-overflow: ellipsis;
+  }
+
+  .mat-column-races {
+    max-width: 50px;
+  }
+
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+    border: 1px;
+  }
+
+  .name-form-field {
+    width: 60%;
+  }
+
+  .country-form-field {
+    width: 40%;
+  }
+
+  .invalid-input {
+    font-size: smaller;
+    opacity: 0.3;
+  }
+
+  .athlete-history-table {
+    text-align: left;
+    width: 100%;
+  }
+
+  .athlete-history-table tr:nth-child(2n+1) {background: #e8eaeb;}
+  .athlete-history-table th {background: #bfc2c4;}
+
+  .athlete-history-table td, .athlete-history-table th {
+    border-width: 0px;
+    padding: 0.4em;
+    font-size: 0.9em;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .history-table-container {
+    position: relative;
+    max-height: 400px;
+    overflow: auto;
+    border: 1px solid black;
+  }
+
+  .rated-athlete {
+    text-decoration: none !important;
+    font-weight: bold;
+    display: inline-block;
+  }
+
+  .loading-shade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 56px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .api-rate-limit-reached {
+    color: #980000;
+    max-width: 360px;
+    text-align: center;
+  }
+
+  tr.example-detail-row {
+    height: 0;
+  }
+
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+
+  .example-element-description {
+    padding: 16px;
+  }
+
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }

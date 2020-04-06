@@ -1,8 +1,4 @@
-/* .router-outlet-container {
-  display: flex;
-  flex-direction: row;
+.router-outlet-container {
+  max-width: 920px;
+  margin: auto;
 }
-
-router-outlet+* {
-  padding: 0 16px;
-} */

@@ -1,1 +1,86 @@
-<h2>TODO: races table</h2>
+<div class="races-container mat-elevation-z8">
+    <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults" [color]="'warn'"></mat-spinner>
+        <div class="api-rate-limit-reached" *ngIf="isRateLimitReached">
+            API rate limit has been reached.
+        </div>
+    </div>
+
+    <div class="race-table-container">
+        <form class="filters-form">
+            <mat-form-field class="name-form-field">
+                <mat-label class="search-label">Name filter</mat-label>
+                <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="nameFilter"
+                    type="text" minlength="3" (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel"
+                    class="search-input">
+
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-input">
+                    <div *ngIf="name.errors.minlength">
+                        Name filter must be at least 3 characters long.
+                    </div>
+                </div>
+            </mat-form-field>
+
+            <mat-form-field class="country-form-field">
+                <mat-label class="search-label">Country filter</mat-label>
+                <input matInput type="text" placeholder="Ex. Germany" class="country-input"
+                    [formControl]="countryControl" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let countryName of filteredCountryNames | async" [value]="countryName">
+                        {{ countryName }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+        </form>
+
+        <table #table mat-table [dataSource]="triscoreRaces" id="race-table-id" class="race-table" matSort
+            matSortActive="date" matSortDirection="desc" matSortDisableClear multiTemplateDataRows>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Date</th>
+                <td mat-cell *matCellDef="let race">{{race.date | date:'mediumDate'}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let race">
+                    <a [routerLink]="['/race', race.name, race.date]" class="invisible-link">
+                        {{race.name}}
+                    </a>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="country">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Country</th>
+                <td mat-cell *matCellDef="let race">{{getCountryFlag(race.location.c)}}{{race.location.c}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef disableClear>Type</th>
+                <td mat-cell *matCellDef="let race">{{race.type}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Total</th>
+                <td mat-cell *matCellDef="let race">{{race.stats.t}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="finished">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Finished</th>
+                <td mat-cell *matCellDef="let race">{{race.stats.s}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="percent">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>%Finished</th>
+                <td mat-cell *matCellDef="let race">{{race.stats.p}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let race; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+    <mat-paginator [length]="resultsLength" [pageSizeOptions]="[20, 50, 100]" (page)="onPageEvent($event)">
+    </mat-paginator>
+</div>

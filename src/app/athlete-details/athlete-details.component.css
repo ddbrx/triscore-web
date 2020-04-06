@@ -1,0 +1,158 @@
+.athlete-details-container {
+  position: relative;
+  overflow: auto;
+}
+
+.athlete-details-section {
+  width: 80%;
+  height: 200px;
+  margin: auto;
+  padding: 10px;
+}
+
+.athlete-details-summary {
+  width: 25%;
+  margin-left: 10%;
+  padding-top: 11%;
+  position: relative;
+  float: left;
+}
+
+.athlete-details-gauge {
+  margin-left: 35%;
+  padding-top: 2%;
+  width: 360px;
+}
+
+.athlete-details-plot {
+  margin-left: 5%;
+  /* padding-top: 2%; */
+}
+
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.athlete-history-table {
+  text-align: left;
+  width: 100%;
+}
+
+.athlete-history-table tr:nth-child(2n+1) {
+  background: #e8eaeb;
+}
+
+.athlete-history-table th {
+  background: #bfc2c4;
+}
+
+.athlete-history-table td, .athlete-history-table th {
+  border-width: 0px;
+  padding: 0.4em;
+  font-size: 0.8em;
+  text-align: left;
+  overflow: hidden;
+}
+
+.score-increase {
+  color: green;
+}
+
+.score-decrease {
+  color: red;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.athlete-races-section {}
+
+.mat-column-date {
+  width: 100px;
+  overflow: auto;
+}
+
+.mat-column-race {
+  width: 226px;
+  overflow: auto;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+
+.total-detail {
+  height: 18px;
+  width: 80%;
+  margin: 0px auto 4px;
+}
+
+.of-total-detail {
+  font-weight: lighter;
+  font-size: 0.75em;
+  height: 11px;
+  color: #7c807bd9;
+  /* width: 75%; */
+  margin: 0px auto;
+}
+
+.race-result-detail {
+  text-align: center;
+  width: 100%;
+}
+
+.race-result-detail tr {
+  border-bottom: 1px solid gray;
+}
+
+.race-result-detail td, .race-result-detail th {
+  padding: 0.4em;
+  font-size: medium;
+  text-align: center;
+  overflow: hidden;
+}

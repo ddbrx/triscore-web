@@ -1,6 +1,20 @@
+.top-bar-inner {
+    /* min-width: 320px; */
+    width: 900px;
+    margin: auto;
+    position: relative;
+    display: flex;
+}
+
 .mat-toolbar {
-    border-bottom: solid 1px #ca2100;
+    border-bottom: solid 2px #ca2100;
     transition: height 200ms ease-in;
+
+    /* min-width: 620px; */
+    width: 920px;
+    margin: auto;
+    position: relative;
+    display: flex;
 }
 
 .logo {
@@ -9,9 +23,9 @@
     border-radius: 6px;
     border-width: 1px;
     background-color: white;
-    padding: 6px 6px;
-    /* border: 2px solid white; */
+    padding: 3px 10px;
     border: 2px solid #db3c3f;
+    /* margin-left: -20px; */
 }
 
 .logo-letters {
@@ -19,7 +33,7 @@
 }
 
 .fill-remaining-space {
-    flex: 1 1 auto;
+    flex: 2 1 auto;
 }
 
 .toolbar-tab {

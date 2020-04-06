@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { merge, Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap, filter } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Observable, of as observableOf } from 'rxjs';
+import { catchError, map, switchMap, startWith } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 import { GetCountryFlag, GetCountryNames, IsValidCountryName } from '../utils/country'
 import { GetScoreStyle, GetFirstLetterStyle } from '../utils/score-color'
 import { FormControl } from '@angular/forms';
 import { TriscoreAthlete, TriscoreApi } from "../triscore-api/triscore-api";
+
 
 @Component({
   selector: 'app-rating',
@@ -16,19 +17,20 @@ import { TriscoreAthlete, TriscoreApi } from "../triscore-api/triscore-api";
   templateUrl: 'rating.component.html'
 })
 export class RatingTableComponent implements AfterViewInit {
-  displayedColumns: string[] = ['rank', 'name', 'country', 'group', 'races', 'rating'];
+  displayedColumns: string[] = ['rank', 'name', 'country', 'group', 'races', 'score'];
 
   triscoreApi: TriscoreApi | null;
-  data: TriscoreAthlete[] = [];
-
-  countryControl = new FormControl();
-  countryNames: string[];
-  filteredCountryNames: Observable<string[]>;
+  triscoreAthletes: TriscoreAthlete[] = [];
 
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
+
   nameFilter = "";
+
+  countryControl = new FormControl();
+  countryNames: string[];
+  filteredCountryNames: Observable<string[]>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -37,23 +39,10 @@ export class RatingTableComponent implements AfterViewInit {
   constructor(
     private _httpClient: HttpClient,
     private router: Router,
+    private route: ActivatedRoute
   ) {
-  }
-
-  ngOnInit() {
     this.countryNames = GetCountryNames();
     this.filteredCountryNames = observableOf(this.countryNames);
-
-    this.countryControl.valueChanges
-      .pipe(
-        map(value => this.filterCountryName(value))
-      )
-      .subscribe(data => {
-        if (IsValidCountryName(this.countryControl.value)) {
-          this.paginator.pageIndex = 0;
-        }
-        this.filteredCountryNames = observableOf(data)
-      });
   }
 
   ngAfterViewInit() {
@@ -61,9 +50,152 @@ export class RatingTableComponent implements AfterViewInit {
 
     this.sort.sortChange.subscribe(() => {
       this.paginator.pageIndex = 0;
+      this.navigateToCurrentParams();
     });
 
-    this.findAthletes();
+    this.countryControl.valueChanges.pipe(
+      map(value => this.filterCountryName(value))
+    ).subscribe(data => {
+      if (IsValidCountryName(this.countryControl.value)) {
+        this.paginator.pageIndex = 0;
+        this.navigateToCurrentParams();
+      } else {
+        this.filteredCountryNames = observableOf(data)
+      }
+    });
+
+    this.route.queryParamMap.pipe(
+      startWith(),
+      switchMap(params => {
+        this.isLoadingResults = true;
+        if (this.needToFixParams(params)) {
+          this.navigateToCurrentParams();
+        }
+        return this.triscoreApi!.getRating(
+          this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.nameFilter, this.countryControl.value);
+      }),
+      map(triscoreAthletes => {
+        this.isLoadingResults = false;
+        this.isRateLimitReached = false;
+        this.resultsLength = triscoreAthletes.total_count;
+        return triscoreAthletes.athletes;
+      }),
+      catchError(() => {
+        this.isLoadingResults = false;
+        this.isRateLimitReached = true;
+        return observableOf([]);
+      })
+    ).subscribe(triscoreAthletes => this.triscoreAthletes = triscoreAthletes);
+  }
+
+  needToFixParams(params) {
+    var fixed = false;
+
+    var pageIndex = this.getValidPageIndex(params.get('page') || '');
+    if (pageIndex != this.paginator.pageIndex) {
+      this.paginator.pageIndex = pageIndex;
+      fixed = true;
+    }
+
+    var pageSize = this.getValidPageSize(params.get('size') || '');
+    if (pageSize != this.paginator.pageSize) {
+      this.paginator.pageSize = pageSize;
+      fixed = true;
+    }
+
+    var sortField = this.getValidSortField(params.get('sort') || '');
+    if (sortField != this.sort.active) {
+      this.sort.active = sortField;
+      fixed = true;
+    }
+
+    var sortOrder = this.getValidSortOrder(params.get('order') || '');
+    if (sortOrder != this.sort.direction) {
+      this.sort.direction = sortOrder;
+      fixed = true;
+    }
+
+    var name = this.getValidName(params.get('name') || '');
+    if (name != this.nameFilter) {
+      this.nameFilter = name;
+      fixed = true;
+    }
+
+    var country = this.getValidCountry(params.get('country') || '');
+    if (country != this.countryControl.value) {
+      this.countryControl.setValue(country);
+      fixed = true;
+    }
+
+    return fixed;
+  }
+
+  getValidPageIndex(page) {
+    var pageIndex = parseInt(page);
+    if (pageIndex >= 0) {
+      return pageIndex;
+    }
+    return 0;
+  }
+
+  getValidPageSize(size) {
+    var pageSize = parseInt(size);
+    if (this.paginator.pageSizeOptions.findIndex(x => x == pageSize) != -1) {
+      return pageSize;
+    }
+    return 0;
+  }
+
+  getValidSortField(sort) {
+    if (sort == 'score' || sort == 'races') {
+      return sort;
+    }
+    return 'score';
+  }
+
+  getValidSortOrder(order) {
+    if (order == 'asc' || order == 'desc') {
+      return order;
+    }
+    return 'desc';
+  }
+
+  getValidName(name: string) {
+    var trimmedName = name.trim();
+    if (trimmedName.length == 0 || trimmedName.length >= 3) {
+      return trimmedName;
+    }
+    return '';
+  }
+
+  getValidCountry(country) {
+    if (IsValidCountryName(country)) {
+      return country;
+    }
+    return '';
+  }
+
+  onPageEvent(event) {
+    this.paginator.pageIndex = event.pageIndex;
+    this.paginator.pageSize = event.pageSize;
+    this.table.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    this.navigateToCurrentParams();
+  }
+
+  nameFilterChanged() {
+    this.paginator.pageIndex = 0;
+    this.navigateToCurrentParams();
+  }
+
+  navigateToCurrentParams() {
+    var queryParams = {};
+    queryParams['page'] = this.paginator.pageIndex;
+    queryParams['size'] = this.paginator.pageSize;
+    queryParams['sort'] = this.sort.active;
+    queryParams['order'] = this.sort.direction;
+    queryParams['name'] = this.nameFilter;
+    queryParams['country'] = this.countryControl.value || '';
+    this.router.navigate(['/rating'], { queryParams: queryParams, queryParamsHandling: 'merge'});
   }
 
   filterCountryName(value: string): string[] {
@@ -81,59 +213,5 @@ export class RatingTableComponent implements AfterViewInit {
 
   getFirstLetterStyle(score: number) {
     return GetFirstLetterStyle(score);
-  }
-
-  nameFilterChanged() {
-    this.paginator.pageIndex = 0;
-    this.findAthletes();
-  }
-
-  onPageEvent() {
-    this.table.nativeElement.scrollIntoView({ behavior: 'smooth' });
-  }
-
-  findAthletes() {
-    merge(this.sort.sortChange, this.paginator.page, this.countryControl.valueChanges)
-      .pipe(
-        startWith({}),
-        filter(() => IsValidCountryName(this.countryControl.value)),
-        switchMap(() => {
-          this.isLoadingResults = true;
-          return this.triscoreApi!.getRating(
-            this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize, this.nameFilter, this.countryControl.value || '');
-        }),
-        map(data => {
-          this.isLoadingResults = false;
-          this.isRateLimitReached = false;
-          this.resultsLength = data.total_count;
-
-          var queryParams = {}
-
-          queryParams['from'] = this.paginator.pageIndex * this.paginator.pageSize;
-          queryParams['to'] = (1 + this.paginator.pageIndex) * this.paginator.pageSize - 1;
-          queryParams['sort'] = this.sort.active;
-          queryParams['order'] = this.sort.direction;
-
-          var trimmedNameFilter = this.nameFilter.trim();
-          if (trimmedNameFilter.length != 0) {
-            queryParams['name'] = trimmedNameFilter;
-          }
-
-          var trimmedCountryFilter = (this.countryControl.value || '').trim();
-          if (trimmedCountryFilter.length != 0) {
-            queryParams['country'] = trimmedCountryFilter;
-          }
-
-          this.router.navigate(['/rating'], { queryParams: queryParams });
-
-          return data.athletes;
-        }),
-        catchError((error) => {
-          this.isLoadingResults = false;
-          this.isRateLimitReached = true;
-          console.error('failed to load data: ' + error);
-          return observableOf([]);
-        })
-      ).subscribe(data => this.data = data);
   }
 }

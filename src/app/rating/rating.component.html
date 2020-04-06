@@ -1,7 +1,7 @@
-<div class="example-container mat-elevation-z8">
-  <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+<div class="rating-container mat-elevation-z8">
+  <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
     <mat-spinner *ngIf="isLoadingResults" [color]="'warn'"></mat-spinner>
-    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+    <div class="api-rate-limit-reached" *ngIf="isRateLimitReached">
       API rate limit has been reached.
     </div>
   </div>
@@ -11,12 +11,12 @@
       <mat-form-field class="name-form-field">
         <mat-label class="search-label">Name filter</mat-label>
 
-        <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="nameFilter" type="text" minlength="4"
+        <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="nameFilter" type="text" minlength="3"
           (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel" class="search-input">
 
         <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-input">
           <div *ngIf="name.errors.minlength">
-            Name must be at least 4 characters long.
+            Name filter must be at least 3 characters long.
           </div>
         </div>
 
@@ -35,53 +35,48 @@
 
     </form>
 
-    <table #table mat-table [dataSource]="data" id="score-table-id" class="score-table" matSort matSortActive="rating"
-      matSortDirection="desc" matSortDisableClear multiTemplateDataRows>
-      <!-- Rank Column -->
+    <table #table mat-table [dataSource]="triscoreAthletes" id="score-table-id" class="score-table" matSort matSortActive="score" matSortDirection="desc" matSortDisableClear multiTemplateDataRows>
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>Rank</th>
-        <td mat-cell *matCellDef="let row">
-          {{row.rank == row.id ? row.rank : row.id + ' (' + row.rank + ')'}}
+        <td mat-cell *matCellDef="let athlete">
+          {{athlete.qr + ' (' + athlete.r + ')'}}
         </td>
       </ng-container>
 
-      <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let row" [ngStyle]="getScoreStyle(row.rating)">
-          <a [routerLink]="['/athlete', row.profile]" class="invisible-link">
-            <span [ngStyle]="getFirstLetterStyle(row.rating)">{{row.name.substr(0, 1)}}</span>{{row.name.substr(1)}}
+        <td mat-cell *matCellDef="let athlete" [ngStyle]="getScoreStyle(athlete.s)">
+          <a [routerLink]="['/athlete', athlete.id]" class="invisible-link">
+            <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span>{{athlete.n.substr(1)}}
           </a></td>
       </ng-container>
 
-      <!-- Country Column -->
       <ng-container matColumnDef="country">
         <th mat-header-cell *matHeaderCellDef>Country</th>
-        <td mat-cell *matCellDef="let row">{{getCountryFlag(row.country)}}{{row.country}}</td>
+        <td mat-cell *matCellDef="let athlete">
+          {{getCountryFlag(athlete.c)}}
+          {{athlete.c}}</td>
       </ng-container>
 
       <ng-container matColumnDef="group">
-        <th mat-header-cell *matHeaderCellDef>Group</th>
-        <td mat-cell *matCellDef="let row">{{row.group}}</td>
+        <th mat-header-cell *matHeaderCellDef>Age Group</th>
+        <td mat-cell *matCellDef="let athlete">{{athlete.a}}</td>
       </ng-container>
 
-      <!-- Races Column -->
       <ng-container matColumnDef="races">
         <th mat-header-cell *matHeaderCellDef mat-sort-header matSortStart="asc" disableClear>Races</th>
-        <!-- <th mat-header-cell *matHeaderCellDef>Races</th> -->
-        <td mat-cell *matCellDef="let row">{{row.races}}</td>
+        <td mat-cell *matCellDef="let athlete">{{athlete.p}}</td>
       </ng-container>
 
-      <!-- Rating Column -->
-      <ng-container matColumnDef="rating">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Rating</th>
-        <td mat-cell *matCellDef="let row">{{row.rating}}</td>
+      <ng-container matColumnDef="score">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Score</th>
+        <td mat-cell *matCellDef="let athlete">{{athlete.s}}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let athlete; columns: displayedColumns;"></tr>
     </table>
   </div>
 
-  <mat-paginator [length]="resultsLength" [pageSizeOptions]="[20, 50, 100]" (page)="onPageEvent()"></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSizeOptions]="[20, 50, 100]" (page)="onPageEvent($event)"></mat-paginator>
 </div>

@@ -6,8 +6,7 @@ export function GetCountryNames(): string[] {
 }
 
 export function IsValidCountryName(word: string): boolean {
-  return !word ||
-    (word.trim().length == 0 || countryCodes.some(country => country.name == word));
+  return word.trim().length == 0 || countryCodes.some(country => country.name == word);
 }
 
 export function GetCountryFifaCodeByName(countryName: string): string {
