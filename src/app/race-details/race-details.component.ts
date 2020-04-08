@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { TriscoreRace, TriscoreRaceResult, TriscoreRaceDetailsResult, TriscoreApi, TriscoreRaceDetailsResponse } from "../triscore-api/triscore-api";
 import { GetCountryFlag, GetCountryNames, IsValidCountryName } from '../utils/country'
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { GetScoreStyle, GetFirstLetterStyle } from '../utils/score-color'
 
 @Component({
   selector: 'app-race-details',
@@ -27,7 +28,6 @@ export class RaceDetailsTableComponent implements AfterViewInit {
 
   triscoreApi: TriscoreApi | null;
   race: TriscoreRaceDetailsResult;
-  // race$: Observable<TriscoreRace>;
   results: TriscoreRaceResult[];
 
   resultsLength = 0;
@@ -60,9 +60,6 @@ export class RaceDetailsTableComponent implements AfterViewInit {
   updateData() {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
-        // merge(this.sort.sortChange, this.paginator.page, this.route.paramMap)
-        // .pipe(
-        // startWith({}),
         this.isLoadingResults = true;
         return this.triscoreApi!.getRaceDetails(
           params.get('name'), params.get('date'), this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction
@@ -90,5 +87,13 @@ export class RaceDetailsTableComponent implements AfterViewInit {
 
   getCountryFlag(countryName: string): string {
     return GetCountryFlag(countryName);
+  }
+
+  getScoreStyle(score: number) {
+    return GetScoreStyle(score);
+  }
+
+  getFirstLetterStyle(score: number) {
+    return GetFirstLetterStyle(score);
   }
 }

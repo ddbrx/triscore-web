@@ -1,0 +1,13 @@
+markdown ::ng-deep .about-link {
+    cursor: pointer;
+    color: lightgray;
+    bottom: 1px;
+    text-decoration: none;
+    transition: color .15s ease-out;
+    font-weight: lighter;
+    font-size: smaller;
+}
+
+markdown ::ng-deep .about-link:hover {
+    color: #db4c3f;
+}

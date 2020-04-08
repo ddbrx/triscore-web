@@ -12,11 +12,11 @@ import { TriscoreAthlete, TriscoreApi } from "../triscore-api/triscore-api";
 
 
 @Component({
-  selector: 'app-rating',
-  styleUrls: ['rating.component.css'],
-  templateUrl: 'rating.component.html'
+  selector: 'app-athletes',
+  styleUrls: ['athletes.component.css'],
+  templateUrl: 'athletes.component.html'
 })
-export class RatingTableComponent implements AfterViewInit {
+export class AthletesTableComponent implements AfterViewInit {
   displayedColumns: string[] = ['rank', 'name', 'country', 'group', 'races', 'score'];
 
   triscoreApi: TriscoreApi | null;
@@ -71,7 +71,7 @@ export class RatingTableComponent implements AfterViewInit {
         if (this.needToFixParams(params)) {
           this.navigateToCurrentParams();
         }
-        return this.triscoreApi!.getRating(
+        return this.triscoreApi!.getAthletes(
           this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.nameFilter, this.countryControl.value);
       }),
       map(triscoreAthletes => {
@@ -195,7 +195,7 @@ export class RatingTableComponent implements AfterViewInit {
     queryParams['order'] = this.sort.direction;
     queryParams['name'] = this.nameFilter;
     queryParams['country'] = this.countryControl.value || '';
-    this.router.navigate(['/rating'], { queryParams: queryParams, queryParamsHandling: 'merge'});
+    this.router.navigate(['/athletes'], { queryParams: queryParams, queryParamsHandling: 'merge'});
   }
 
   filterCountryName(value: string): string[] {

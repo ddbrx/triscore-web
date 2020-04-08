@@ -91,6 +91,7 @@ tr.example-element-row:not(.example-expanded-row):hover {
 
 tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
+  color: #b4b0b0
 }
 
 .example-element-row td {

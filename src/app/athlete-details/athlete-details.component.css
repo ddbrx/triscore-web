@@ -26,9 +26,7 @@
 
 .athlete-details-plot {
   margin-left: 5%;
-  /* padding-top: 2%; */
 }
-
 
 ul {
   list-style: none;
@@ -125,7 +123,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   opacity: 0.5;
 }
 
-
 .total-detail {
   height: 18px;
   width: 80%;
@@ -137,7 +134,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   font-size: 0.75em;
   height: 11px;
   color: #7c807bd9;
-  /* width: 75%; */
   margin: 0px auto;
 }
 

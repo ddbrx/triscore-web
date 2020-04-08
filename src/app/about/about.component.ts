@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GetScoreColor, GetScoreStyle, GetFirstLetterStyle, GetScoreLevel } from '../utils/score-color'
 
 @Component({
   selector: 'app-about',
@@ -12,4 +13,10 @@ export class AboutPageComponent implements OnInit {
   ngOnInit() {
   }
 
+  getScoreStyle(score: number) {
+    return GetScoreStyle(score);
+  }
+  getFirstLetterStyle(score: number) {
+    return GetFirstLetterStyle(score);
+  }
 }

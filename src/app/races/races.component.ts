@@ -73,18 +73,18 @@ export class RacesTableComponent implements AfterViewInit {
         return this.triscoreApi!.getRaces(
           this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.nameFilter, this.countryControl.value);
       }),
-      map(triscoreRaces => {
+      map(triscoreRacesResponse => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = triscoreRaces.total_count;
-        return triscoreRaces.races;
+        this.resultsLength = triscoreRacesResponse.total_count;
+        return triscoreRacesResponse.races;
       }),
       catchError(() => {
         this.isLoadingResults = false;
         this.isRateLimitReached = true;
         return observableOf([]);
       })
-    ).subscribe(triscoreRaces => this.triscoreRaces = triscoreRaces);
+    ).subscribe(races => this.triscoreRaces = races);
   }
 
   needToFixParams(params) {

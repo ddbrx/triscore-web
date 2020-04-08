@@ -18,14 +18,12 @@
 }
 
 .logo {
-    /* font-weight: lighter; */
     font-size: 24px;
     border-radius: 6px;
     border-width: 1px;
     background-color: white;
     padding: 3px 10px;
-    border: 2px solid #db3c3f;
-    /* margin-left: -20px; */
+    border: 2px solid #db4c3f;
 }
 
 .logo-letters {

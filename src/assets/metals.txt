@@ -1,0 +1,26 @@
+        // Au 1064 Золото     Gold
+// Cu 1084 Медь       Copper
+// Be 1287 Бериллий   Beryllium
+// Si 1415 Кремний    Silicon
+// Ni 1455 Никель     Nickel
+// Co 1495 Кобальт    Cobalt
+// Fe 1539 Железо     Ferrum (iron)
+// Pd 1555 Палладий   Palladium
+      // Pa 1572 ПротактинийProtactinium
+// Ti 1680 Титан      Titanium
+      // Th 1750 Торий      Thorium
+      // Pt 1768 Платина    Platinum
+// Zr 1855 Цирконий   Zirconium
+// Cr 1907 Хром       Chromium
+      // V  1910 Ванадий    Vanadium
+      // Rh 1964 Родий      Rhodium
+// Tc 2157 Технеций   Technetium
+      // Hf 2233 Гафний     Hafnium
+// Ru 2334 Рутений    Ruthenium
+// Ir 2446 Иридий     Iridium
+      // Nb 2477 Ниобий     Niobium
+// Mo 2623 Молибден   Molybdenum
+      // Ta 3017 Тантал     Tantalum
+// Os 3033 Осмий      Osmium
+      // Re 3186 Рений      Rhenium
+// W  3422 Вольфрам   Wolfram

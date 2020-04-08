@@ -14,55 +14,49 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { AppComponent } from './app.component';
 import { DemoMaterialModule } from './utils/material-module';
-import { RatingTableComponent } from './rating/rating.component';
-import { RacesTableComponent } from './races/races.component';
+import { AthletesTableComponent } from './athletes/athletes.component';
 import { AthleteDetailsTableComponent } from './athlete-details/athlete-details.component';
+import { RacesTableComponent } from './races/races.component';
 import { RaceDetailsTableComponent } from './race-details/race-details.component';
-
 import { TopBarComponent } from './top-bar/top-bar.component';
 
 import { RouteReuseService } from './route-reuse/route-reuse.service';
-import { NgxCharComponent } from './ngxchart/ngxchart.component';
 
 import { Router } from '@angular/router';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { HomePageComponent } from './home/home.component';
 import { AboutPageComponent } from './about/about.component';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ChartsModule } from 'ng2-charts';
+import { MarkdownModule } from 'ngx-markdown';
 
 
 const appRoutes: Routes = [
   {
-    path: 'rating',
-    component: RatingTableComponent,
+    path: 'athletes',
+    component: AthletesTableComponent,
     data: { reuse: true },
   },
   {
     path: 'athlete/:profile',
     component: AthleteDetailsTableComponent,
-    data: { reuse: false },
   },
   {
     path: 'races',
     component: RacesTableComponent,
-    data: { reuse: false },
   },
   {
     path: 'race/:name/:date',
     component: RaceDetailsTableComponent,
-    data: { reuse: false },
   },
   {
     path: 'about',
     component: AboutPageComponent,
-    data: { reuse: false },
   },
   {
     path: '',
-    component: HomePageComponent,
+    redirectTo: 'athletes',
+    pathMatch: 'full'
   },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -73,6 +67,7 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: false }
     ),
+    MarkdownModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
@@ -82,17 +77,14 @@ const appRoutes: Routes = [
     MatNativeDateModule,
     ReactiveFormsModule,
     NgxChartsModule,
-    ChartsModule,
   ],
   declarations: [
     AppComponent,
     TopBarComponent,
-    RatingTableComponent,
+    AthletesTableComponent,
     AthleteDetailsTableComponent,
     RaceDetailsTableComponent,
     RacesTableComponent,
-    NgxCharComponent,
-    HomePageComponent,
     AboutPageComponent,
     PageNotFoundComponent
   ],
@@ -114,8 +106,3 @@ export class AppModule {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
-
-
-/**  Copyright 2019 Google LLC. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license */
