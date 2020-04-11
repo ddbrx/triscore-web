@@ -39,15 +39,16 @@
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>Rank</th>
         <td mat-cell *matCellDef="let athlete">
-          {{athlete.qr + ' (' + athlete.r + ')'}}
+          {{athlete.i + ' (' + athlete.r + ')'}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let athlete" [ngStyle]="getScoreStyle(athlete.s)">
+        <td mat-cell *matCellDef="let athlete">
           <a [routerLink]="['/athlete', athlete.id]" class="invisible-link">
-            <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span>{{athlete.n.substr(1)}}
+            <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span><span
+            [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span><sup class="athlete-level-short">{{getScoreLevelShort(athlete.s)}}</sup>
           </a>
         </td>
       </ng-container>

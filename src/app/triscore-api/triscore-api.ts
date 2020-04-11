@@ -4,6 +4,32 @@ import { Observable } from 'rxjs';
 
 const MAX_PAGE_SIZE: number = 100;
 
+interface TriscoreAthletesResponse {
+    data: TriscoreAthlete[];
+    total: number;
+}
+
+export interface TriscoreAthleteDetailsResponse {
+    data: TriscoreAthlete;
+    total: number;
+}
+
+export interface TriscoreRacesResponse {
+    data: TriscoreRaceInfo[];
+    total: number;
+}
+
+export interface TriscoreRaceInfoResponse {
+    data: TriscoreRaceInfo;
+    total: number;
+}
+
+export interface TriscoreRaceResultsResponse {
+    data: TriscoreRaceResult[];
+    total: number;
+}
+
+
 export interface TriscoreAthlete {
     id: number;
     qr: number;
@@ -13,10 +39,10 @@ export interface TriscoreAthlete {
     a: string;
     p: number;
     s: number;
-    h: TriscoreRaceResult[];
+    h: TriscoreAthleteHistoryResult[];
 }
 
-export interface TriscoreRaceResult {
+export interface TriscoreAthleteHistoryResult {
     index: number;
     race: string;
     date: string;
@@ -64,33 +90,10 @@ export interface TriscoreLeg {
     tor: number;
 }
 
-interface TriscoreAthletesResponse {
-    athletes: TriscoreAthlete[];
-    total_count: number;
-}
-
-export interface TriscoreRacesResponse {
-    races: TriscoreRace[];
-    total_count: number;
-}
-
-export interface TriscoreRaceDetailsResponse {
-    data: TriscoreRaceDetailsResult[];
-}
-
-export interface TriscoreRaceDetailsResult {
-    name: string;
-    date: string;
-    brand: string;
-    type: string;
-    location: TriscoreRaceLocation;
-    distance: TriscoreRaceDistance;
-    stats: TriscoreRaceStats;
-    results: TriscoreRaceResult;
-}
 
 
-export interface TriscoreRace {
+
+export interface TriscoreRaceInfo {
     name: string;
     date: string;
     brand: string;
@@ -102,7 +105,8 @@ export interface TriscoreRace {
 }
 
 export interface TriscoreRaceResult {
-    s: number;
+    ps: number;
+    ns: number;
 
     id: string;
     n: string;
@@ -168,8 +172,8 @@ export interface TriscoreRaceStats {
 }
 
 export class TriscoreApi {
-    private kHost: string = 'http://127.0.0.1:5000';
-    // private kHost: string = 'http://static.135.98.202.116.clients.your-server.de';
+    // private kHost: string = 'http://127.0.0.1:5000';
+    private kHost: string = 'http://static.135.98.202.116.clients.your-server.de';
 
     constructor(private _httpClient: HttpClient) { }
 
@@ -192,9 +196,9 @@ export class TriscoreApi {
         return this._httpClient.get<TriscoreAthletesResponse>(requestUrl);
     }
 
-    getAthleteDetails(profile: string): Observable<TriscoreAthlete> {
+    getAthleteDetails(profile: string): Observable<TriscoreAthleteDetailsResponse> {
         var requestUrl = `${this.kHost}/athlete-details?id=${profile}`;
-        return this._httpClient.get<TriscoreAthlete>(requestUrl);
+        return this._httpClient.get<TriscoreAthleteDetailsResponse>(requestUrl);
     }
 
     getRaces(pageIndex: number, pageSize: number, sort: string, order: string, name: string, country: string): Observable<TriscoreRacesResponse> {
@@ -204,10 +208,7 @@ export class TriscoreApi {
         }
         var from: number = pageIndex * pageSize;
         var to: number = from + pageSize - 1;
-        var requestUrl = `${this.kHost}/races?sort=${sort}&order=${order}&from=${from}&to=${to}`;
-        if (name.length > 0) {
-            requestUrl += `&name=${name}`;
-        }
+        var requestUrl = `${this.kHost}/races?sort=${sort}&order=${order}&from=${from}&to=${to}&name=${name}`;
         if (country.length > 0) {
             var countryFifaCode = GetCountryFifaCodeByName(country);
             requestUrl += `&country=${countryFifaCode}`;
@@ -215,10 +216,22 @@ export class TriscoreApi {
         return this._httpClient.get<TriscoreRacesResponse>(requestUrl);
     }
 
-    getRaceDetails(name: string, date: string, pageIndex: number, pageSize: number, sort: string, order: string): Observable<TriscoreRaceDetailsResponse> {
+
+    getRaceInfo(name: string, date: string): Observable<TriscoreRaceInfoResponse> {
+        var requestUrl = `${this.kHost}/race-info?name=${name}&date=${date}`;
+        return this._httpClient.get<TriscoreRaceInfoResponse>(requestUrl);
+    }
+
+    getRaceResults(race_name: string, race_date: string, athlete: string, country: string, pageIndex: number, pageSize: number, sort: string, order: string): Observable<TriscoreRaceResultsResponse> {
         var skip = pageIndex * pageSize;
         var limit = pageSize;
-        var requestUrl = `${this.kHost}/race-details?name=${name}&date=${date}&skip=${skip}&limit=${limit}&sort=${sort}&order=${order}`;
-        return this._httpClient.get<TriscoreRaceDetailsResponse>(requestUrl);
+
+        var requestUrl = `${this.kHost}/race-results?name=${race_name}&date=${race_date}&athlete=${athlete}&skip=${skip}&limit=${limit}&sort=${sort}&order=${order}`;
+
+        if (country.length > 0) {
+            var countryFifaCode = GetCountryFifaCodeByName(country);
+            requestUrl += `&country=${countryFifaCode}`;
+        }
+        return this._httpClient.get<TriscoreRaceResultsResponse>(requestUrl);
     }
 }

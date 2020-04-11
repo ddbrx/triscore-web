@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { RouteReuseStrategy, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
@@ -19,8 +19,6 @@ import { AthleteDetailsTableComponent } from './athlete-details/athlete-details.
 import { RacesTableComponent } from './races/races.component';
 import { RaceDetailsTableComponent } from './race-details/race-details.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
-
-import { RouteReuseService } from './route-reuse/route-reuse.service';
 
 import { Router } from '@angular/router';
 
@@ -35,7 +33,6 @@ const appRoutes: Routes = [
   {
     path: 'athletes',
     component: AthletesTableComponent,
-    data: { reuse: true },
   },
   {
     path: 'athlete/:profile',
@@ -46,7 +43,7 @@ const appRoutes: Routes = [
     component: RacesTableComponent,
   },
   {
-    path: 'race/:name/:date',
+    path: 'race',
     component: RaceDetailsTableComponent,
   },
   {
@@ -78,6 +75,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     NgxChartsModule,
   ],
+  exports: [RouterModule],
   declarations: [
     AppComponent,
     TopBarComponent,
@@ -90,8 +88,7 @@ const appRoutes: Routes = [
   ],
   bootstrap: [AppComponent],
   providers: [
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
-    { provide: RouteReuseStrategy, useClass: RouteReuseService },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }
   ]
 })
 

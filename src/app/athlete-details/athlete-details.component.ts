@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map, switchMap, first } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GetCountryFlag } from '../utils/country'
-import { GetScoreColor, GetScoreStyle, GetFirstLetterStyle, GetScoreLevel } from '../utils/score-color'
+import { GetScoreColor, GetScoreStyle, GetFirstLetterStyle, GetScoreLevel, GetScoreLevelShort } from '../utils/score-color'
 import { TriscoreAthlete, TriscoreApi, TriscoreRaceResult } from "../triscore-api/triscore-api";
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
@@ -37,9 +37,20 @@ export class AthleteDetailsTableComponent implements OnInit {
   expandedElement: TriscoreRaceResult | null;
 
   displayedColumns: string[] = [
-    'index', 'date', 'race', 'type', 'status', 'time', 'group', 'size', 'rank', 'seed', 'time_rank', 'delta', 'score', 'level'];
+    'index', 'date', 'race', 'type', 'finish', 'group', 'size', 'rank', 'seed', 'time_rank', 'raw_delta', 'delta', 'score', 'level'];
 
   margin = { top: 40, right: 20, bottom: 30, left: 40 };
+
+  raceStatsGradient: boolean = false;
+  raceStatsAnimations: boolean = false;
+
+  raceStatsShowXAxis: boolean = false;
+  raceStatsShowYAxis: boolean = true;
+
+  raceStatsShowDataLabel: boolean = true;
+  raceStatsRoundDomains: boolean = true;
+
+  raceStatsBarPadding: number = 4;
 
   view: any[] = [700, 300];
 
@@ -104,6 +115,14 @@ export class AthleteDetailsTableComponent implements OnInit {
     };
   }
 
+  getRaceStatsColorScheme(athlete: TriscoreAthlete) {
+    return {
+      domain: [GetScoreColor(athlete.s), '#ada8a8' ],
+      selectable: true,
+      group: 'Ordinal',
+    };
+  }
+
   getScoreStyle(score: number) {
     return GetScoreStyle(score);
   }
@@ -116,6 +135,70 @@ export class AthleteDetailsTableComponent implements OnInit {
     return GetScoreLevel(score);
   }
 
+  getScoreLevelShort(score: number) {
+    return GetScoreLevelShort(score);
+  }
+
+
+  getMaxScore(athlete: TriscoreAthlete) {
+    return Math.max.apply(Math, athlete.h.map(x => Math.max(x.ns, x.ps)));
+  }
+
+  getTotalRacesCount(athlete: TriscoreAthlete) {
+    return athlete.h.length;
+  }
+
+  getNotFinishedRacesCount(athlete: TriscoreAthlete, type: string) {
+    return athlete.h.filter(item => item.type == type && item.st != 'ok').length;
+  }
+
+  getFinishedRacesCount(athlete: TriscoreAthlete, type: string) {
+    return athlete.h.filter(item => item.type == type && item.st == 'ok').length;
+  }
+
+  getRaceStats(athlete: TriscoreAthlete) {
+    return [
+      {
+        'name': 'Full',
+        'series': [
+          {
+            'name': 'Completed',
+            'value': this.getFinishedRacesCount(athlete, 'full')
+          },
+          {
+            'name': 'Not Finished',
+            'value': this.getNotFinishedRacesCount(athlete, 'full')
+          }
+        ]
+      },
+      {
+        'name': 'Half',
+        'series': [
+          {
+            'name': 'Completed',
+            'value': this.getFinishedRacesCount(athlete, 'half')
+          },
+          {
+            'name': 'Not Finished',
+            'value': this.getNotFinishedRacesCount(athlete, 'half')
+          }
+        ]
+      }
+    ]
+  }
+
+
+  getLevelChangeSymbol(oldScore: number, newScore: number) {
+    if (this.getScoreLevel(oldScore) != this.getScoreLevel(newScore)) {
+      if (newScore >= oldScore) {
+        return '▲';
+      } else {
+        return '▼';
+      }
+    }
+    return '';
+  }
+
   ngOnInit() {
     this.triscoreApi = new TriscoreApi(this._httpClient);
     this.athlete$ = this.route.paramMap.pipe(
@@ -123,7 +206,7 @@ export class AthleteDetailsTableComponent implements OnInit {
         return this.triscoreApi!.getAthleteDetails(params.get('profile'));
       }
       ),
-      map(data => {
+      map(athleteDetailsResponse => {
         var series = new Array();
 
         var minScore = 0;
@@ -137,8 +220,9 @@ export class AthleteDetailsTableComponent implements OnInit {
         const kBikeKmFull = 180;
         const kRunKmFull = 42.2;
 
-        if (data.h.length > 0) {
-          var first_result = data.h[0];
+        var athlete = athleteDetailsResponse.data;
+        if (athlete.h.length > 0) {
+          var first_result = athlete.h[0];
           minScore = first_result.ps;
           maxScore = first_result.ps;
           var start_date = new Date(first_result.date.substr(0, 10));
@@ -153,7 +237,7 @@ export class AthleteDetailsTableComponent implements OnInit {
           series.push(start_item);
         }
 
-        data.h.forEach(result => {
+        athlete.h.forEach(result => {
           var completedSwimKm = kSwimKmFull;
           var completedBikeKm = kBikeKmFull;
           var completedRunKm = kRunKmFull;
@@ -185,19 +269,17 @@ export class AthleteDetailsTableComponent implements OnInit {
               'race': result.race,
               'group': result.a,
               'size': result.as,
-              'rank': result.tr,
-              'seed': result.sr,
-              'delta': result.da,
+              'rank': result.ar
             }
           };
 
           series.push(item);
         });
 
-        var filteredSwim = data.h.filter(result => result.legs.s.t != 99999).map(result => (result.as - result.legs.s.tar) / (result.as - 1.));
-        var filteredBike = data.h.filter(result => result.legs.b.t != 99999).map(result => (result.as - result.legs.b.tar) / (result.as - 1.));
-        var filteredRun = data.h.filter(result => result.legs.r.t != 99999).map(result => (result.as - result.legs.r.tar) / (result.as - 1.));
-        var filteredRank = data.h.filter(result => result.t != 99999).map(result => (result.as - result.tar) / (result.as - 1.));
+        var filteredSwim = athlete.h.filter(result => result.legs.s.t != 99999).map(result => (result.as - result.legs.s.tar) / (result.as - 1.));
+        var filteredBike = athlete.h.filter(result => result.legs.b.t != 99999).map(result => (result.as - result.legs.b.tar) / (result.as - 1.));
+        var filteredRun = athlete.h.filter(result => result.legs.r.t != 99999).map(result => (result.as - result.legs.r.tar) / (result.as - 1.));
+        var filteredRank = athlete.h.filter(result => result.t != 99999).map(result => (result.as - result.tar) / (result.as - 1.));
 
         this.swimAvgPerf = this.toFormattedPercent(this.getAverageOrZero(filteredSwim));
         this.bikeAvgPerf = this.toFormattedPercent(this.getAverageOrZero(filteredBike));
@@ -219,11 +301,11 @@ export class AthleteDetailsTableComponent implements OnInit {
           }
         ];
 
-        this.plotData = [{ 'name': data.n, 'series': series }];
-        this.colorScheme = this.getColorScheme(data.s);
+        this.plotData = [{ 'name': athlete.n, 'series': series }];
+        this.colorScheme = this.getColorScheme(athlete.s);
         this.gaugeColorScheme = this.getGaugeColorScheme();
 
-        return data;
+        return athlete;
       })
     );
   }

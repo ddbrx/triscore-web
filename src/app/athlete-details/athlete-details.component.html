@@ -1,17 +1,22 @@
 <div *ngIf="athlete$ | async as athlete" class="athlete-details-container">
     <div class="athlete-details-section">
         <div class="athlete-details-summary">
-            <h2 [ngStyle]="getScoreStyle(athlete.s)">
-                <span
-                    [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span>{{athlete.n.substr(1)}}
+            <h2>
+                <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span><span
+                    [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span><sup class="athlete-level-short-head">{{getScoreLevelShort(athlete.s)}}</sup>
             </h2>
-
-            <ul>
-                <li>{{getCountryFlag(athlete.c)}}{{athlete.c}} {{athlete.a}}</li>
-                <li>Score: {{athlete.s}}</li>
-                <li>Races: {{athlete.p}}</li>
-                <!-- <li>Rank: #{{athlete.rank}}</li> -->
-            </ul>
+            <div class="athlete-country-and-age-group">
+                <p>{{getCountryFlag(athlete.c)}} {{athlete.a}}</p>
+                <p>Score: {{athlete.s}} Max: {{getMaxScore(athlete)}}</p>
+            </div>
+            <br>
+            <div class="athlete-details-race-stats">
+                <ngx-charts-bar-horizontal-stacked [scheme]="getRaceStatsColorScheme(athlete)"
+                    [gradient]="raceStatsGradient" [results]="getRaceStats(athlete)" [animations]="raceStatsAnimations"
+                    [xAxis]="raceStatsShowXAxis" [yAxis]="raceStatsShowYAxis" [showDataLabel]="raceStatsShowDataLabel"
+                    [barPadding]="raceStatsBarPadding" [roundDomains]="raceStatsRoundDomains">
+                </ngx-charts-bar-horizontal-stacked>
+            </div>
         </div>
 
         <div class="athlete-details-gauge">
@@ -30,31 +35,20 @@
             [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="plotData" [autoScale]="autoScale"
             [gradient]="gradient" [rangeFillOpacity]="0.1">
 
-            <!-- <ng-template #tooltipTemplate let-model="model">
-                <div style="text-align: left;">
+            <ng-template #tooltipTemplate let-model="model">
+                <div style="text-align: center; margin: 0; padding: 0;">
                     <ul>
-                        <li>{{model.extra.result}}</li>
-                        <li>{{model.name | date:'mediumDate'}}</li>
-                        <li>Group: {{model.extra.group}}</li>
-                        <li>Size: {{model.extra.size}}</li>
-                        <li>Seed: {{model.extra.seed | number:'1.1-1'}}</li>
-                        <li>Rank: {{model.extra.rank | number:'1.1-1'}}</li>
-                        <li>Delta: {{model.extra.delta}}</li>
+                        <h3>{{model.extra.race}}</h3>
+                        <p>{{model.name | date:'mediumDate'}}</p>
                     </ul>
                 </div>
-            </ng-template> -->
+            </ng-template>
 
             <ng-template #seriesTooltipTemplate let-model="model">
-                <div *ngFor="let item of model" style="text-align: left;">
-                    <p>{{item.extra.race}}</p>
-                    <ul>
-                        <li>{{item.name | date:'mediumDate'}}</li>
-                        <li>Group: {{item.extra.group}}</li>
-                        <li>Size: {{item.extra.size}}</li>
-                        <li>Seed: {{item.extra.seed | number:'1.1-1'}}</li>
-                        <li>Rank: {{item.extra.rank | number:'1.1-1'}}</li>
-                        <li>Delta: {{item.extra.delta}}</li>
-                    </ul>
+                <div *ngFor="let item of model" style="text-align: center;">
+                    <h3>{{item.extra.race}}</h3>
+                    <p>{{item.name | date:'mediumDate'}}</p>
+                    <p>{{item.extra.group}} {{item.extra.rank}}/{{item.extra.size}}</p>
                 </div>
             </ng-template>
         </ngx-charts-line-chart>
@@ -76,7 +70,7 @@
             <ng-container matColumnDef="race">
                 <th mat-header-cell *matHeaderCellDef>Race</th>
                 <td mat-cell *matCellDef="let row">
-                    <a [routerLink]="['/race', row.race, row.date]" class="invisible-link">
+                    <a [routerLink]="['/race']" [queryParams]="{race: row.race, date: row.date}" class="invisible-link">
                         {{row.race}}
                     </a>
                 </td>
@@ -87,14 +81,9 @@
                 <td mat-cell *matCellDef="let row">{{row.type}}</td>
             </ng-container>
 
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>Status</th>
-                <td mat-cell *matCellDef="let row">{{ row.st }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="time">
-                <th mat-header-cell *matHeaderCellDef>Time</th>
-                <td mat-cell *matCellDef="let row">{{ row.t != 99999 ? (row.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
+            <ng-container matColumnDef="finish">
+                <th mat-header-cell *matHeaderCellDef>Finish</th>
+                <td mat-cell *matCellDef="let row">{{ row.t != 99999 ? (row.t * 1000 | date:'H:mm:ss':'UTC') : row.st}}
                 </td>
             </ng-container>
 
@@ -119,8 +108,15 @@
             </ng-container>
 
             <ng-container matColumnDef="time_rank">
-                <th mat-header-cell *matHeaderCellDef>TR</th>
+                <th mat-header-cell *matHeaderCellDef>TRank<a [routerLink]="['/about']" fragment="time-rank"
+                        class="invisible-link">*</a></th>
                 <td mat-cell *matCellDef="let row">{{row.vtr | number:'1.0-0'}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="raw_delta">
+                <th mat-header-cell *matHeaderCellDef>RawDa</th>
+                <td mat-cell *matCellDef="let row">{{(row.vsr - row.vtr) / row.as | number:'1.2-2'}}</td>
             </ng-container>
 
             <ng-container matColumnDef="delta">
@@ -139,10 +135,29 @@
 
             <ng-container matColumnDef="level">
                 <th mat-header-cell *matHeaderCellDef>Level</th>
-                <td mat-cell *matCellDef="let row" [ngStyle]="getScoreStyle(row.ns)">
-                    <a [routerLink]="['/about']" fragment="level" class="invisible-link">
+                <td mat-cell *matCellDef="let row">
+                    <!-- <div *ngIf="getScoreLevel(row.ns)!=getScoreLevel(row.ps)" style="display: inline"
+                        [ngStyle]="getFirstLetterStyle(row.ns)">
+                        <div *ngIf="row.ns>row.ps" style="display: inline">
+                            &#x25B2;
+                        </div>
+                        <div *ngIf="row.ns<row.ps" style="display: inline">
+                            &#x25BC;
+                        </div>
+                    </div> -->
+                    <a [routerLink]="['/about']" fragment="level" class="invisible-link"
+                        [ngStyle]="getScoreStyle(row.ns)">
                         <span
-                            [ngStyle]="getFirstLetterStyle(row.ns)">{{getScoreLevel(row.ns).substr(0, 1)}}</span>{{getScoreLevel(row.ns).substr(1)}}
+                            [ngStyle]="getFirstLetterStyle(row.ns)">{{getLevelChangeSymbol(row.ps, row.ns)}}{{getScoreLevel(row.ns).substr(0, 1)}}</span>{{getScoreLevel(row.ns).substr(1)}}
+                        <!--
+                                <div *ngIf="row.ns>=row.ps" style="display: inline">
+                                    &#x25B2;
+                                </div>
+                                <div *ngIf="row.ns<row.ps" style="display: inline">
+                                    &#x25BC;
+                                </div> -->
+                        <!-- </div> -->
+
                     </a>
                 </td>
             </ng-container>

@@ -3,70 +3,70 @@
 
 
 <markdown ngPreserveWhitespaces id="triscore">
-    ## What is TriScore? <a class="about-link" [routerLink]="" fragment="triscore">§</a>
+    ## What is TriScore? <a class="about-link" routerLink="." fragment="triscore">&#182;</a>
     ---
     It is a platform to measure triathletes perfomance based on their races history.
 </markdown>
 <br>
 <markdown ngPreserveWhitespaces id="level">
-    ## What does athlete's color and level mean? <a class="about-link" [routerLink]="" fragment="level">§</a>
+    ## What does athlete's color and level mean? <a class="about-link" routerLink="." fragment="level">&#182;</a>
     ---
     Level depends on athlete's current TriScore and inspired by [metals melting points
     °C](https://en.wikipedia.org/wiki/Melting_points_of_the_elements_(data_page)):
 </markdown>
 <ul>
     <li>
-        3400+ <span [ngStyle]="getFirstLetterStyle(3400)">W</span><span [ngStyle]="getScoreStyle(3400)">olfram</span>
+        3300+ <span [ngStyle]="getFirstLetterStyle(3300)">{{getScoreLevel(3300).substr(0, 1)}}</span><span [ngStyle]="getScoreStyle(3300)">{{getScoreLevel(3300).substr(1)}}</span>
     </li>
     <li>
-        3000+ <span [ngStyle]="getScoreStyle(3000)">Osmium</span>
+        3000+ <span [ngStyle]="getScoreStyle(3000)">{{getScoreLevel(3000)}}</span>
     </li>
     <li>
-        2700+ <span [ngStyle]="getScoreStyle(2700)">Molybdenum</span>
+        2700+ <span [ngStyle]="getScoreStyle(2700)">{{getScoreLevel(2700)}}</span>
     </li>
     <li>
-        2500+ <span [ngStyle]="getScoreStyle(2500)">Iridium</span>
+        2450+ <span [ngStyle]="getScoreStyle(2500)">{{getScoreLevel(2450)}}</span>
     </li>
     <li>
-        2300+ <span [ngStyle]="getScoreStyle(2300)">Ruthenium</span>
+        2300+ <span [ngStyle]="getScoreStyle(2300)">{{getScoreLevel(2300)}}</span>
     </li>
     <li>
-        2100+ <span [ngStyle]="getScoreStyle(2100)">Technetium</span>
+        2150+ <span [ngStyle]="getScoreStyle(2150)">{{getScoreLevel(2150)}}</span>
     </li>
     <li>
-        1900+ <span [ngStyle]="getScoreStyle(1900)">Chromium</span>
+        2000+ <span [ngStyle]="getScoreStyle(2000)">{{getScoreLevel(2000)}}</span>
     </li>
     <li>
-        1800+ <span [ngStyle]="getScoreStyle(1800)">Zirconium</span>
+        1900+ <span [ngStyle]="getScoreStyle(1900)">{{getScoreLevel(1900)}}</span>
     </li>
     <li>
-        1700+ <span [ngStyle]="getScoreStyle(1700)">Titanium</span>
+        1800+ <span [ngStyle]="getScoreStyle(1800)">{{getScoreLevel(1800)}}</span>
     </li>
     <li>
-        1600+ <span [ngStyle]="getScoreStyle(1600)">Palladium</span>
+        1700+ <span [ngStyle]="getScoreStyle(1700)">{{getScoreLevel(1700)}}</span>
     </li>
     <li>
-        1550+ <span [ngStyle]="getScoreStyle(1550)">Ferrum</span>
+        1600+ <span [ngStyle]="getScoreStyle(1600)">{{getScoreLevel(1600)}}</span>
     </li>
     <li>
-        1500+ <span [ngStyle]="getScoreStyle(1500)">Cobalt</span>
+        1550+ <span [ngStyle]="getScoreStyle(1550)">{{getScoreLevel(1550)}}</span>
     </li>
     <li>
-        1450+ <span [ngStyle]="getScoreStyle(1450)">Nickel</span>
+        1500+ <span [ngStyle]="getScoreStyle(1500)">{{getScoreLevel(1500)}}</span>
     </li>
     <li>
-        1400+ <span [ngStyle]="getScoreStyle(1400)">Silicon</span>
+        1450+ <span [ngStyle]="getScoreStyle(1450)">{{getScoreLevel(1450)}}</span>
     </li>
     <li>
-        1300+ <span [ngStyle]="getScoreStyle(1300)">Beryllium</span>
+        1400+ <span [ngStyle]="getScoreStyle(1400)">{{getScoreLevel(1400)}}</span>
     </li>
     <li>
-        1300&minus; <span [ngStyle]="getScoreStyle(1000)">Copper</span>
+        1400&minus; <span [ngStyle]="getScoreStyle(1300)">{{getScoreLevel(1300)}}</span>
     </li>
 </ul>
 <br>
 <markdown ngPreserveWhitespaces id="performance-gauge">
-    ## What the hell is that gauge? <a class="about-link" [routerLink]="" fragment="performance-gauge">§</a>
+    ## What the hell is that gauge? <a class="about-link" routerLink="." fragment="performance-gauge">&#182;</a>
     ---
     That is Performance Gauge!
     It shows average percent of age group athletes staying behind a selected one.
@@ -75,8 +75,18 @@
 
     ![](../../assets/img/performance_gauge.png "Performance gauge")
 </markdown>
+<br>
+<markdown ngPreserveWhitespaces id="time-rank">
+    ## What do you call TRank or Time Rank? <a class="about-link" href="time-rank">&#182;</a>
+    ---
+    Time Rank is relative rank of athlete in his age group according to his finish time.
+
+    So, no need to fight for actual place with Time Rank. The only thing you have to care about is your time gap with a
+    leader.
+</markdown>
+<br>
 <markdown ngPreserveWhitespaces id="formula">
-    ## What is the formula behind the TriScore? <a class="about-link" [routerLink]="" fragment="formula">§</a>
+    ## What is the formula behind the TriScore? <a class="about-link" routerLink="." fragment="formula">&#182;</a>
     ---
     TriScore based on [Elo rating system](https://en.wikipedia.org/wiki/Elo_rating_system) widely used in
     [chess](https://ratings.fide.com/), computer games
@@ -94,9 +104,7 @@
     - if A has score greater than B on 400: `p = 10/11`
     - if A has score less than B on 400: `p = 1/11`
 
-    For each athlete before each race we calculate the Seed: expected Time Rank he is going to take. Time Rank is not a
-    usual discrete number showing how much people faster than you. Time Rank is your relative position between first and
-    last athletes in your age group based on finish time.
+    For each athlete before each race we calculate the Seed: expected Time Rank he is going to take.
 
     After race you have a real Time Rank. The difference of your Seed and your Time Rank called Delta.
     If Delta is positive, your score is growing. Otherwise, it's falling.
@@ -104,43 +112,45 @@
 
 <br>
 <markdown ngPreserveWhitespaces id="change">
-    ## Does my TriScore change if I do not participate in new races? <a class="about-link" [routerLink]=""
-        fragment="change">§</a>
+    ## Does my TriScore change if I do not participate in new races? <a class="about-link" routerLink="."
+        fragment="change">&#182;</a>
     ---
     No, for now TriScore describes athlete's level right after his last race. More races you have, more
     precise your score.
 </markdown>
 <br>
 <markdown ngPreserveWhitespaces id="distance">
-    ## How does TriScore Delta depend on the length of triathlon distance? <a class="about-link" [routerLink]=""
-        fragment="distance">§</a>
+    ## How does TriScore Delta depend on the length of triathlon distance? <a class="about-link" routerLink="."
+        fragment="distance">&#182;</a>
     ---
     Delta is proportional to the length of a distance. Full distance move you clother to your real score twice
     faster than half distance.
 </markdown>
 <br>
 <markdown ngPreserveWhitespaces id="dnf">
-    ## Does score punish for not finishing the race? <a class="about-link" [routerLink]="" fragment="dnf">§</a>
+    ## Does score punish for not finishing the race? <a class="about-link" routerLink="." fragment="dnf">&#182;</a>
     ---
     Yes, it is always better to finish the race in terms of score. But for lower level athletes DNF is less
     painful than for higher level.
 </markdown>
 <br>
 <markdown ngPreserveWhitespaces id="upper-bound">
-    ## Is there a upper bound for TriScore? <a class="about-link" [routerLink]="" fragment="upper-bound">§</a>
+    ## Is there a upper bound for TriScore? <a class="about-link" routerLink="." fragment="upper-bound">&#182;</a>
     ---
     Theoretically, no.
 </markdown>
 <br>
 <markdown ngPreserveWhitespaces id="maximize">
-    ## What is the fastest way gain higher TriScore? <a class="about-link" [routerLink]="" fragment="maximize">§</a>
+    ## What is the fastest way gain higher TriScore? <a class="about-link" routerLink="."
+        fragment="maximize">&#182;</a>
     ---
     You have to overtake as many athletes as you can (thanks, cap). Competing with stronger athletes gives you more
-    chances to increase your TriScore since your Seed (see <a [routerLink]="" fragment="formula">formula</a>) is higher compare to week athletes group.
+    chances to increase your TriScore since your Seed (see <a routerLink="." fragment="formula">formula</a>) is higher
+    compare to week athletes group.
 </markdown>
 <br>
 <markdown ngPreserveWhitespaces id="races">
-    ## What races are under the hood? <a class="about-link" [routerLink]="" fragment="races">§</a>
+    ## What races are under the hood? <a class="about-link" routerLink="." fragment="races">&#182;</a>
     ---
     Rating is calculated based on all official half and full [IRONMAN](https://www.ironman.com/) results. But no
     worries, more races are coming!
@@ -148,9 +158,11 @@
 <br>
 
 <markdown ngPreserveWhitespaces id="failed-to-find">
-    ## I cannot find myself on the [athletes](https://triscore.me/athletes) page, but I AM IRONMAN! <a class="about-link" [routerLink]="" fragment="failed-to-find">§</a>
+    ## I cannot find myself on the [athletes](https://triscore.me/athletes) page, but I AM IRONMAN! <a
+        class="about-link" routerLink="." fragment="failed-to-find">&#182;</a>
     ---
-    First, try to put your name/surname another way. For example Dmitriy vs Dmitrii vs Дмитрий. If nothing changes, your race result probably not on the official results list.
+    First, try to put your name/surname another way. For example Dmitriy vs Dmitrii vs Дмитрий. If nothing changes, your
+    race result probably not on the official results list.
     <!-- Let us know at support@triscore.me. -->
 </markdown>
 <br>

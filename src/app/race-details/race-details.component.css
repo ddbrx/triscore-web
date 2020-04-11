@@ -28,7 +28,7 @@ table {
 }
 
 .mat-column-rank {
-  max-width: 10px;
+  max-width: 20px;
 }
 
 .mat-column-group {
@@ -155,4 +155,17 @@ tr.example-element-row:not(.example-expanded-row):active {
   font-size: medium;
   text-align: center;
   overflow: hidden;
+}
+
+.name-form-field {
+  width: 60%;
+}
+
+.country-form-field {
+  width: 40%;
+}
+
+.invalid-input {
+  font-size: smaller;
+  opacity: 0.3;
 }

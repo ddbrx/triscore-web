@@ -22,7 +22,7 @@ table {
 .mat-column-rank,
 .mat-column-group {
   width: auto;
-  max-width: 60px;
+  max-width: 30px;
 }
 
 .mat-column-name {

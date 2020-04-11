@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GetCountryFlag, GetCountryNames, IsValidCountryName } from '../utils/country'
 import { GetScoreStyle, GetFirstLetterStyle } from '../utils/score-color'
 import { FormControl } from '@angular/forms';
-import { TriscoreApi, TriscoreRace } from "../triscore-api/triscore-api";
+import { TriscoreApi, TriscoreRaceInfo } from "../triscore-api/triscore-api";
 
 @Component({
   selector: 'app-races',
@@ -19,7 +19,7 @@ export class RacesTableComponent implements AfterViewInit {
   displayedColumns: string[] = ['date', 'name', 'country', 'type', 'total', 'finished', 'percent'];
 
   triscoreApi: TriscoreApi | null;
-  triscoreRaces: TriscoreRace[];
+  triscoreRaces: TriscoreRaceInfo[];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -76,8 +76,8 @@ export class RacesTableComponent implements AfterViewInit {
       map(triscoreRacesResponse => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = triscoreRacesResponse.total_count;
-        return triscoreRacesResponse.races;
+        this.resultsLength = triscoreRacesResponse.total;
+        return triscoreRacesResponse.data;
       }),
       catchError(() => {
         this.isLoadingResults = false;

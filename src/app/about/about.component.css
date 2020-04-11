@@ -5,7 +5,6 @@ markdown ::ng-deep .about-link {
     text-decoration: none;
     transition: color .15s ease-out;
     font-weight: lighter;
-    font-size: smaller;
 }
 
 markdown ::ng-deep .about-link:hover {

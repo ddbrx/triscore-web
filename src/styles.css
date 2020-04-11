@@ -17,3 +17,13 @@ h1 {
 h2 {
   font-size: 20px;
 }
+
+h3 {
+  font-size: 14px;
+}
+
+.athlete-level-short {
+  position: relative;
+  font-size: x-small;
+  font-weight: 100;
+}

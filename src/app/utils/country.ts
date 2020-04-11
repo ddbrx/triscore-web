@@ -23,6 +23,10 @@ export function GetCountryFifaCodeByName(countryName: string): string {
 }
 
 export function GetCountryFlag(countryFifaCode: string): string {
+  if (!countryFifaCode) {
+    return '';
+  }
+
   var country = countryCodes.find(c => c['fifa'] == countryFifaCode);
   if (!country) {
     console.error('no country found fifa code: ' + countryFifaCode);

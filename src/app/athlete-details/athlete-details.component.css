@@ -11,17 +11,42 @@
 }
 
 .athlete-details-summary {
-  width: 25%;
+  width: 30%;
   margin-left: 10%;
   padding-top: 11%;
   position: relative;
   float: left;
 }
 
+.athlete-details-summary h2 {
+  margin: 0;
+}
+
+.athlete-level-short-head {
+  position: relative;
+  font-size: small;
+  font-weight: 100;
+}
+
+.athlete-country-and-age-group {
+  font-size: normal;
+  font-weight: lighter;
+}
+
+.athlete-country-and-age-group p {
+  margin: 0;
+}
+
 .athlete-details-gauge {
-  margin-left: 35%;
-  padding-top: 2%;
+  margin-left: 40%;
+  padding-top: 4%;
   width: 360px;
+}
+
+.athlete-details-race-stats {
+  margin-left: -24%;
+  height: 60px;
+  width: 250px;
 }
 
 .athlete-details-plot {
@@ -89,6 +114,14 @@ tr.example-element-row:not(.example-expanded-row):active {
 .mat-column-race {
   width: 226px;
   overflow: auto;
+}
+
+.mat-column-level {
+  width: 90px;
+}
+
+.mat-column-type, .mat-column-size, .mat-column-time_rank, .mat-column-seed {
+  max-width: 30px;
 }
 
 .example-element-row td {

@@ -6,7 +6,7 @@ import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, switchMap, startWith } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetCountryFlag, GetCountryNames, IsValidCountryName } from '../utils/country'
-import { GetScoreStyle, GetFirstLetterStyle } from '../utils/score-color'
+import { GetScoreStyle, GetScoreLevelShort, GetFirstLetterStyle } from '../utils/score-color'
 import { FormControl } from '@angular/forms';
 import { TriscoreAthlete, TriscoreApi } from "../triscore-api/triscore-api";
 
@@ -74,11 +74,11 @@ export class AthletesTableComponent implements AfterViewInit {
         return this.triscoreApi!.getAthletes(
           this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.nameFilter, this.countryControl.value);
       }),
-      map(triscoreAthletes => {
+      map(triscoreAthletesResponse => {
         this.isLoadingResults = false;
         this.isRateLimitReached = false;
-        this.resultsLength = triscoreAthletes.total_count;
-        return triscoreAthletes.athletes;
+        this.resultsLength = triscoreAthletesResponse.total;
+        return triscoreAthletesResponse.data;
       }),
       catchError(() => {
         this.isLoadingResults = false;
@@ -213,5 +213,9 @@ export class AthletesTableComponent implements AfterViewInit {
 
   getFirstLetterStyle(score: number) {
     return GetFirstLetterStyle(score);
+  }
+
+  getScoreLevelShort(score: number) {
+    return GetScoreLevelShort(score);
   }
 }

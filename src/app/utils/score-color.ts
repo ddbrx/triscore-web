@@ -3,47 +3,49 @@ export function GetScoreColor(score: number): string {
     return '#db4c3f';
   } else if (score >= 2700) {
     return '#ff8c00';
-  } else if (score >= 2500) {
+  } else if (score >= 2450) {
     return '#a07509';
   } else if (score >= 2300) {
     return '#f5ba26';
-  } else if (score >= 2100) {
+  } else if (score >= 2150) {
     return '#df06df';
+  } else if (score >= 2000) {
+    return '#841de4';
   } else if (score >= 1900) {
-    return '#8a2be2';
+    return '#b070eb';
   } else if (score >= 1800) {
     return '#0000ff';
   } else if (score >= 1700) {
     return '#007fff';
   } else if (score >= 1600) {
-    return '#87ceeb';
+    return '#70c8eb';
   } else if (score >= 1550) {
     return '#008b8b';
   } else if (score >= 1500) {
-    return '#06e073';
+    return '#23ce78';
   } else if (score >= 1450) {
     return '#008000';
   } else if (score >= 1400) {
     return '#bdb76b';
-  } else if (score >= 1300) {
-    return '#757474';
   }
-  return '#b4b0b0';
+  return '#757474';
 }
 
 export function GetScoreLevel(score: number) {
   if (score >= 3300) {
     return 'Wolfram';
   } else if (score >= 3000) {
-    return 'Osmium';
+    return 'Tantalum';
   } else if (score >= 2700) {
     return 'Molybdenum';
-  } else if (score >= 2500) {
+  } else if (score >= 2450) {
     return 'Iridium';
   } else if (score >= 2300) {
     return 'Ruthenium';
-  } else if (score >= 2100) {
+  } else if (score >= 2150) {
     return 'Technetium';
+  } else if (score >= 2000) {
+    return 'Rhodium';
   } else if (score >= 1900) {
     return 'Chromium';
   } else if (score >= 1800) {
@@ -60,10 +62,44 @@ export function GetScoreLevel(score: number) {
     return 'Nickel';
   } else if (score >= 1400) {
     return 'Silicon';
-  } else if (score >= 1300) {
-    return 'Beryllium';
   }
-  return 'Copper';
+  return 'Cuprum';
+}
+
+
+export function GetScoreLevelShort(score: number) {
+  if (score >= 3300) {
+    return 'W';
+  } else if (score >= 3000) {
+    return 'Ta';
+  } else if (score >= 2700) {
+    return 'Mo';
+  } else if (score >= 2450) {
+    return 'Ir';
+  } else if (score >= 2300) {
+    return 'Ru';
+  } else if (score >= 2150) {
+    return 'Tc';
+  } else if (score >= 2000) {
+    return 'Rh';
+  } else if (score >= 1900) {
+    return 'Cr';
+  } else if (score >= 1800) {
+    return 'Zr';
+  } else if (score >= 1700) {
+    return 'Ti';
+  } else if (score >= 1600) {
+    return 'Pd';
+  } else if (score >= 1550) {
+    return 'Fe';
+  } else if (score >= 1500) {
+    return 'Co';
+  } else if (score >= 1450) {
+    return 'Ni';
+  } else if (score >= 1400) {
+    return 'Si';
+  }
+  return 'Cu';
 }
 
 export function GetFirstLetterColor(score: number): string {

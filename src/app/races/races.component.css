@@ -20,18 +20,25 @@ table {
     max-height: 300px;
   }
 
+  .mat-column-date {
+    max-width: 50px;
+  }
+
   .mat-column-name {
-    max-width: 150px;
+    max-width: 200px;
     text-overflow: ellipsis;
   }
 
   .mat-column-country {
-    max-width: 100px;
+    max-width: 75px;
     text-overflow: ellipsis;
   }
 
-  .mat-column-races {
-    max-width: 50px;
+  .mat-column-total,
+  .mat-column-finished,
+  .mat-column-percent,
+  .mat-column-type {
+    max-width: 30px;
   }
 
   .mat-form-field {
