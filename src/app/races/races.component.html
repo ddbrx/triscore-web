@@ -32,6 +32,15 @@
                 </mat-autocomplete>
             </mat-form-field>
 
+            <mat-form-field class="race-type-form-field">
+                <mat-label>Race type filter</mat-label>
+                <mat-select [formControl]="raceTypeControl">
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let raceType of raceTypes" [value]="raceType">
+                        {{raceType}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
         </form>
 
         <table #table mat-table [dataSource]="triscoreRaces" id="race-table-id" class="race-table" matSort
@@ -45,14 +54,14 @@
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let race">
-                    <a [routerLink]="['/race']" [queryParams]="{race: race.name, date: race.date}" class="invisible-link">
+                    <a [routerLink]="['/race']" [queryParams]="{n: race.name, d: race.date}" class="invisible-link">
                         {{race.name}}
                     </a>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="country">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Country</th>
+                <th mat-header-cell *matHeaderCellDef>Country</th>
                 <td mat-cell *matCellDef="let race">{{getCountryFlag(race.location.c)}}{{race.location.c}}</td>
             </ng-container>
 

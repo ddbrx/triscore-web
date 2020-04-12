@@ -3,7 +3,8 @@
         <div class="athlete-details-summary">
             <h2>
                 <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span><span
-                    [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span><sup class="athlete-level-short-head">{{getScoreLevelShort(athlete.s)}}</sup>
+                    [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span><sup
+                    class="athlete-level-short-head">{{getScoreLevelShort(athlete.s)}}</sup>
             </h2>
             <div class="athlete-country-and-age-group">
                 <p>{{getCountryFlag(athlete.c)}} {{athlete.a}}</p>
@@ -112,7 +113,6 @@
                         class="invisible-link">*</a></th>
                 <td mat-cell *matCellDef="let row">{{row.vtr | number:'1.0-0'}}</td>
             </ng-container>
-
 
             <ng-container matColumnDef="raw_delta">
                 <th mat-header-cell *matHeaderCellDef>RawDa</th>

@@ -39,7 +39,7 @@ export class RaceDetailsTableComponent implements AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  nameFilter = "";
+  athleteNameFilter = "";
 
   raceName: string;
   raceDate: string;
@@ -99,7 +99,7 @@ export class RaceDetailsTableComponent implements AfterViewInit {
         }
 
         return this.triscoreApi!.getRaceResults(
-          this.raceName, this.raceDate, this.nameFilter, this.countryControl.value, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.ageGroupControl.value);
+          this.raceName, this.raceDate, this.athleteNameFilter, this.countryControl.value, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.ageGroupControl.value);
       }),
       map(triscoreRacesResponse => {
         this.isLoadingResults = false;
@@ -118,46 +118,46 @@ export class RaceDetailsTableComponent implements AfterViewInit {
   needToFixParams(params) {
     var fixed = false;
 
-    this.raceName = params.get('race');
-    this.raceDate = params.get('date');
+    this.raceName = params.get('n');
+    this.raceDate = params.get('d');
 
-    var pageIndex = this.getValidPageIndex(params.get('page') || '');
+    var pageIndex = this.getValidPageIndex(params.get('pi') || '');
     if (pageIndex != this.paginator.pageIndex) {
       this.paginator.pageIndex = pageIndex;
       fixed = true;
     }
 
-    var pageSize = this.getValidPageSize(params.get('size') || '');
+    var pageSize = this.getValidPageSize(params.get('ps') || '');
     if (pageSize != this.paginator.pageSize) {
       this.paginator.pageSize = pageSize;
       fixed = true;
     }
 
-    var sortField = this.getValidSortField(params.get('sort') || '');
+    var sortField = this.getValidSortField(params.get('s') || '');
     if (sortField != this.sort.active) {
       this.sort.active = sortField;
       fixed = true;
     }
 
-    var sortOrder = this.getValidSortOrder(params.get('order') || '');
+    var sortOrder = this.getValidSortOrder(params.get('o') || '');
     if (sortOrder != this.sort.direction) {
       this.sort.direction = sortOrder;
       fixed = true;
     }
 
-    var name = this.getValidName(params.get('name') || '');
-    if (name != this.nameFilter) {
-      this.nameFilter = name;
+    var athleteName = this.getValidName(params.get('a') || '');
+    if (athleteName != this.athleteNameFilter) {
+      this.athleteNameFilter = athleteName;
       fixed = true;
     }
 
-    var country = this.getValidCountry(params.get('country') || '');
+    var country = this.getValidCountry(params.get('c') || '');
     if (country != this.countryControl.value) {
       this.countryControl.setValue(country);
       fixed = true;
     }
 
-    var ageGroup = this.getValidAgeGroup(params.get('group') || '');
+    var ageGroup = this.getValidAgeGroup(params.get('g') || '');
     if (ageGroup != this.ageGroupControl.value) {
       this.ageGroupControl.setValue(ageGroup);
       fixed = true;
@@ -232,15 +232,15 @@ export class RaceDetailsTableComponent implements AfterViewInit {
 
   navigateToCurrentParams() {
     var queryParams = {};
-    queryParams['race'] = this.raceName;
-    queryParams['date'] = this.raceDate;
-    queryParams['page'] = this.paginator.pageIndex;
-    queryParams['size'] = this.paginator.pageSize;
-    queryParams['sort'] = this.sort.active;
-    queryParams['order'] = this.sort.direction;
-    queryParams['name'] = this.nameFilter;
-    queryParams['country'] = this.countryControl.value || '';
-    queryParams['group'] = this.ageGroupControl.value || '';
+    queryParams['n'] = this.raceName;
+    queryParams['d'] = this.raceDate;
+    queryParams['pi'] = this.paginator.pageIndex;
+    queryParams['ps'] = this.paginator.pageSize;
+    queryParams['s'] = this.sort.active;
+    queryParams['o'] = this.sort.direction;
+    queryParams['a'] = this.athleteNameFilter;
+    queryParams['c'] = this.countryControl.value || '';
+    queryParams['g'] = this.ageGroupControl.value || '';
     this.router.navigate(['/race'], { queryParams: queryParams, queryParamsHandling: 'merge' });
   }
 

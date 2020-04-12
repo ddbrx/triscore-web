@@ -8,6 +8,10 @@ export function GetAgeGroupCategories(): AgeGroupCategory[] {
 }
 
 export function IsValidAgeGroup(group): boolean {
+    if (!group) {
+        return false;
+    }
+
     for (let item of ageGroupCategories) {
         if (item.groups.findIndex(x => x == group) != -1) {
             return true;

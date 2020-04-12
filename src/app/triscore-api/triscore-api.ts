@@ -204,14 +204,14 @@ export class TriscoreApi {
         return this._httpClient.get<TriscoreAthleteDetailsResponse>(requestUrl);
     }
 
-    getRaces(pageIndex: number, pageSize: number, sort: string, order: string, name: string, country: string): Observable<TriscoreRacesResponse> {
+    getRaces(pageIndex: number, pageSize: number, sort: string, order: string, name: string, country: string, raceType: string): Observable<TriscoreRacesResponse> {
         // console.log('getRaces: pageIndex: ' + pageIndex + ' pageSize: ' + pageSize + ' sort: ' + sort + ' order: ' + order + ' name: ' + name + ' country: ' + country);
         if (pageSize > MAX_PAGE_SIZE) {
             pageSize = MAX_PAGE_SIZE;
         }
         var from: number = pageIndex * pageSize;
         var to: number = from + pageSize - 1;
-        var requestUrl = `${this.kHost}/races?sort=${sort}&order=${order}&from=${from}&to=${to}&name=${name}`;
+        var requestUrl = `${this.kHost}/races?sort=${sort}&order=${order}&from=${from}&to=${to}&name=${name}&type=${raceType}`;
         if (country.length > 0) {
             var countryFifaCode = GetCountryFifaCodeByName(country);
             requestUrl += `&country=${countryFifaCode}`;

@@ -9,6 +9,7 @@ import { GetCountryFlag, GetCountryNames, IsValidCountryName } from '../utils/co
 import { GetScoreStyle, GetFirstLetterStyle } from '../utils/score-color'
 import { FormControl } from '@angular/forms';
 import { TriscoreApi, TriscoreRaceInfo } from "../triscore-api/triscore-api";
+import { GetRaceTypes, IsValidRaceType } from "../utils/race-types"
 
 @Component({
   selector: 'app-races',
@@ -31,6 +32,9 @@ export class RacesTableComponent implements AfterViewInit {
   countryNames: string[];
   filteredCountryNames: Observable<string[]>;
 
+  raceTypeControl = new FormControl();
+  raceTypes: string[];
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('table', { read: ElementRef }) table: ElementRef;
@@ -42,6 +46,7 @@ export class RacesTableComponent implements AfterViewInit {
   ) {
     this.countryNames = GetCountryNames();
     this.filteredCountryNames = observableOf(this.countryNames);
+    this.raceTypes = GetRaceTypes();
   }
 
   ngAfterViewInit() {
@@ -63,6 +68,11 @@ export class RacesTableComponent implements AfterViewInit {
       }
     });
 
+    this.raceTypeControl.valueChanges.subscribe(data => {
+      this.paginator.pageIndex = 0;
+      this.navigateToCurrentParams();
+    });
+
     this.route.queryParamMap.pipe(
       startWith(),
       switchMap(params => {
@@ -71,7 +81,7 @@ export class RacesTableComponent implements AfterViewInit {
           this.navigateToCurrentParams();
         }
         return this.triscoreApi!.getRaces(
-          this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.nameFilter, this.countryControl.value);
+          this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.nameFilter, this.countryControl.value, this.raceTypeControl.value);
       }),
       map(triscoreRacesResponse => {
         this.isLoadingResults = false;
@@ -90,39 +100,45 @@ export class RacesTableComponent implements AfterViewInit {
   needToFixParams(params) {
     var fixed = false;
 
-    var pageIndex = this.getValidPageIndex(params.get('page') || '');
+    var pageIndex = this.getValidPageIndex(params.get('pi') || '');
     if (pageIndex != this.paginator.pageIndex) {
       this.paginator.pageIndex = pageIndex;
       fixed = true;
     }
 
-    var pageSize = this.getValidPageSize(params.get('size') || '');
+    var pageSize = this.getValidPageSize(params.get('ps') || '');
     if (pageSize != this.paginator.pageSize) {
       this.paginator.pageSize = pageSize;
       fixed = true;
     }
 
-    var sortField = this.getValidSortField(params.get('sort') || '');
+    var sortField = this.getValidSortField(params.get('s') || '');
     if (sortField != this.sort.active) {
       this.sort.active = sortField;
       fixed = true;
     }
 
-    var sortOrder = this.getValidSortOrder(params.get('order') || '');
+    var sortOrder = this.getValidSortOrder(params.get('o') || '');
     if (sortOrder != this.sort.direction) {
       this.sort.direction = sortOrder;
       fixed = true;
     }
 
-    var name = this.getValidName(params.get('name') || '');
+    var name = this.getValidName(params.get('n') || '');
     if (name != this.nameFilter) {
       this.nameFilter = name;
       fixed = true;
     }
 
-    var country = this.getValidCountry(params.get('country') || '');
+    var country = this.getValidCountry(params.get('c') || '');
     if (country != this.countryControl.value) {
       this.countryControl.setValue(country);
+      fixed = true;
+    }
+
+    var raceType = this.getValidRaceType(params.get('t') || '');
+    if (raceType != this.raceTypeControl.value) {
+      this.raceTypeControl.setValue(raceType);
       fixed = true;
     }
 
@@ -174,6 +190,13 @@ export class RacesTableComponent implements AfterViewInit {
     return '';
   }
 
+  getValidRaceType(raceType) {
+    if (IsValidRaceType(raceType)) {
+      return raceType;
+    }
+    return '';
+  }
+
   onPageEvent(event) {
     this.paginator.pageIndex = event.pageIndex;
     this.paginator.pageSize = event.pageSize;
@@ -188,12 +211,13 @@ export class RacesTableComponent implements AfterViewInit {
 
   navigateToCurrentParams() {
     var queryParams = {};
-    queryParams['page'] = this.paginator.pageIndex;
-    queryParams['size'] = this.paginator.pageSize;
-    queryParams['sort'] = this.sort.active;
-    queryParams['order'] = this.sort.direction;
-    queryParams['name'] = this.nameFilter;
-    queryParams['country'] = this.countryControl.value || '';
+    queryParams['pi'] = this.paginator.pageIndex;
+    queryParams['ps'] = this.paginator.pageSize;
+    queryParams['s'] = this.sort.active;
+    queryParams['o'] = this.sort.direction;
+    queryParams['n'] = this.nameFilter;
+    queryParams['c'] = this.countryControl.value || '';
+    queryParams['t'] = this.raceTypeControl.value || '';
     this.router.navigate(['/races'], { queryParams: queryParams, queryParamsHandling: 'merge' });
   }
 
