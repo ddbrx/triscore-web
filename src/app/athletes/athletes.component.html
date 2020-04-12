@@ -11,8 +11,8 @@
       <mat-form-field class="name-form-field">
         <mat-label class="search-label">Name filter</mat-label>
 
-        <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="nameFilter" type="text" minlength="3"
-          (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel" class="search-input">
+        <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="nameFilter" type="text"
+          minlength="3" (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel" class="search-input">
 
         <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-input">
           <div *ngIf="name.errors.minlength">
@@ -33,9 +33,21 @@
         </mat-autocomplete>
       </mat-form-field>
 
+      <mat-form-field class="age-group-form-field">
+        <mat-label>Age group filter</mat-label>
+        <mat-select [formControl]="ageGroupControl">
+          <mat-option>-- None --</mat-option>
+          <mat-optgroup *ngFor="let ageGroupCategorie of ageGroupCategories" [label]="ageGroupCategorie.name">
+            <mat-option *ngFor="let ageGroup of ageGroupCategorie.groups" [value]="ageGroup">
+              {{ageGroup}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
     </form>
 
-    <table #table mat-table [dataSource]="triscoreAthletes" id="score-table-id" class="score-table" matSort matSortActive="score" matSortDirection="desc" matSortDisableClear multiTemplateDataRows>
+    <table #table mat-table [dataSource]="triscoreAthletes" id="score-table-id" class="score-table" matSort
+      matSortActive="score" matSortDirection="desc" matSortDisableClear multiTemplateDataRows>
       <ng-container matColumnDef="rank">
         <th mat-header-cell *matHeaderCellDef>Rank</th>
         <td mat-cell *matCellDef="let athlete">
@@ -48,7 +60,8 @@
         <td mat-cell *matCellDef="let athlete">
           <a [routerLink]="['/athlete', athlete.id]" class="invisible-link">
             <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span><span
-            [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span><sup class="athlete-level-short">{{getScoreLevelShort(athlete.s)}}</sup>
+              [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span><sup
+              class="athlete-level-short">{{getScoreLevelShort(athlete.s)}}</sup>
           </a>
         </td>
       </ng-container>
@@ -60,13 +73,13 @@
           {{athlete.c}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="group">
+      <ng-container matColumnDef="age-group">
         <th mat-header-cell *matHeaderCellDef>Age Group</th>
         <td mat-cell *matCellDef="let athlete">{{athlete.a}}</td>
       </ng-container>
 
       <ng-container matColumnDef="races">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header matSortStart="asc" disableClear>Races</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Races</th>
         <td mat-cell *matCellDef="let athlete">{{athlete.p}}</td>
       </ng-container>
 
@@ -80,5 +93,6 @@
     </table>
   </div>
 
-  <mat-paginator [length]="resultsLength" [pageSizeOptions]="[20, 50, 100]" (page)="onPageEvent($event)"></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSizeOptions]="[20, 50, 100]" (page)="onPageEvent($event)">
+  </mat-paginator>
 </div>

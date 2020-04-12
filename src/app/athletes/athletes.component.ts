@@ -9,7 +9,7 @@ import { GetCountryFlag, GetCountryNames, IsValidCountryName } from '../utils/co
 import { GetScoreStyle, GetScoreLevelShort, GetFirstLetterStyle } from '../utils/score-color'
 import { FormControl } from '@angular/forms';
 import { TriscoreAthlete, TriscoreApi } from "../triscore-api/triscore-api";
-
+import { AgeGroupCategory, GetAgeGroupCategories, IsValidAgeGroup } from "../utils/age-groups"
 
 @Component({
   selector: 'app-athletes',
@@ -17,7 +17,10 @@ import { TriscoreAthlete, TriscoreApi } from "../triscore-api/triscore-api";
   templateUrl: 'athletes.component.html'
 })
 export class AthletesTableComponent implements AfterViewInit {
-  displayedColumns: string[] = ['rank', 'name', 'country', 'group', 'races', 'score'];
+  displayedColumns: string[] = ['rank', 'name', 'country', 'age-group', 'races', 'score'];
+
+  ageGroupControl = new FormControl();
+  ageGroupCategories: AgeGroupCategory[];
 
   triscoreApi: TriscoreApi | null;
   triscoreAthletes: TriscoreAthlete[] = [];
@@ -43,6 +46,7 @@ export class AthletesTableComponent implements AfterViewInit {
   ) {
     this.countryNames = GetCountryNames();
     this.filteredCountryNames = observableOf(this.countryNames);
+    this.ageGroupCategories = GetAgeGroupCategories();
   }
 
   ngAfterViewInit() {
@@ -64,6 +68,11 @@ export class AthletesTableComponent implements AfterViewInit {
       }
     });
 
+    this.ageGroupControl.valueChanges.subscribe(data => {
+      this.paginator.pageIndex = 0;
+      this.navigateToCurrentParams();
+    });
+
     this.route.queryParamMap.pipe(
       startWith(),
       switchMap(params => {
@@ -72,7 +81,7 @@ export class AthletesTableComponent implements AfterViewInit {
           this.navigateToCurrentParams();
         }
         return this.triscoreApi!.getAthletes(
-          this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.nameFilter, this.countryControl.value);
+          this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.nameFilter, this.countryControl.value, this.ageGroupControl.value);
       }),
       map(triscoreAthletesResponse => {
         this.isLoadingResults = false;
@@ -127,6 +136,12 @@ export class AthletesTableComponent implements AfterViewInit {
       fixed = true;
     }
 
+    var ageGroup = this.getValidAgeGroup(params.get('group') || '');
+    if (ageGroup != this.ageGroupControl.value) {
+      this.ageGroupControl.setValue(ageGroup);
+      fixed = true;
+    }
+
     return fixed;
   }
 
@@ -175,6 +190,13 @@ export class AthletesTableComponent implements AfterViewInit {
     return '';
   }
 
+  getValidAgeGroup(group) {
+    if (IsValidAgeGroup(group)) {
+      return group;
+    }
+    return '';
+  }
+
   onPageEvent(event) {
     this.paginator.pageIndex = event.pageIndex;
     this.paginator.pageSize = event.pageSize;
@@ -195,7 +217,8 @@ export class AthletesTableComponent implements AfterViewInit {
     queryParams['order'] = this.sort.direction;
     queryParams['name'] = this.nameFilter;
     queryParams['country'] = this.countryControl.value || '';
-    this.router.navigate(['/athletes'], { queryParams: queryParams, queryParamsHandling: 'merge'});
+    queryParams['group'] = this.ageGroupControl.value || '';
+    this.router.navigate(['/athletes'], { queryParams: queryParams, queryParamsHandling: 'merge' });
   }
 
   filterCountryName(value: string): string[] {

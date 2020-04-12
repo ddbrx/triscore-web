@@ -177,7 +177,7 @@ export class TriscoreApi {
 
     constructor(private _httpClient: HttpClient) { }
 
-    getAthletes(pageIndex: number, pageSize: number, sort: string, order: string, name: string, country: string):
+    getAthletes(pageIndex: number, pageSize: number, sort: string, order: string, name: string, country: string, ageGroup: string):
         Observable<TriscoreAthletesResponse> {
         // console.log('getAthletes: pageIndex: ' + pageIndex + ' pageSize: ' + pageSize + ' sort: ' + sort + ' order: ' + order + ' name: ' + name + ' country: ' + country);
         if (pageSize > MAX_PAGE_SIZE) {
@@ -192,6 +192,9 @@ export class TriscoreApi {
         if (country.length > 0) {
             var countryFifaCode = GetCountryFifaCodeByName(country);
             requestUrl += `&country=${countryFifaCode}`;
+        }
+        if (ageGroup.length > 0) {
+            requestUrl += `&group=${ageGroup}`;
         }
         return this._httpClient.get<TriscoreAthletesResponse>(requestUrl);
     }
@@ -222,11 +225,11 @@ export class TriscoreApi {
         return this._httpClient.get<TriscoreRaceInfoResponse>(requestUrl);
     }
 
-    getRaceResults(race_name: string, race_date: string, athlete: string, country: string, pageIndex: number, pageSize: number, sort: string, order: string): Observable<TriscoreRaceResultsResponse> {
+    getRaceResults(race_name: string, race_date: string, athlete: string, country: string, pageIndex: number, pageSize: number, sort: string, order: string, ageGroup: string): Observable<TriscoreRaceResultsResponse> {
         var skip = pageIndex * pageSize;
         var limit = pageSize;
 
-        var requestUrl = `${this.kHost}/race-results?name=${race_name}&date=${race_date}&athlete=${athlete}&skip=${skip}&limit=${limit}&sort=${sort}&order=${order}`;
+        var requestUrl = `${this.kHost}/race-results?name=${race_name}&date=${race_date}&athlete=${athlete}&skip=${skip}&limit=${limit}&sort=${sort}&order=${order}&group=${ageGroup}`;
 
         if (country.length > 0) {
             var countryFifaCode = GetCountryFifaCodeByName(country);
