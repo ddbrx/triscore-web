@@ -3,23 +3,30 @@
         <div class="athlete-details-summary">
             <h2>
                 <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span><span
-                    [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span><sup
-                    class="athlete-level-short-head">{{getScoreLevelShort(athlete.s)}}</sup>
+                    [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span>
             </h2>
             <div class="athlete-country-and-age-group">
-                <p>{{getCountryFlag(athlete.c)}} {{athlete.a}}</p>
+                <p>
+                    <a [routerLink]="['/about']" fragment="level" class="invisible-link">
+                        <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{getScoreLevel(athlete.s).substr(0, 1)}}</span>
+                        <span [ngStyle]="getScoreStyle(athlete.s)">{{getScoreLevel(athlete.s).substr(1)}}</span>
+                    </a>
+                </p>
+                <p>
+                    {{getCountryFlag(athlete.c)}} {{athlete.a}}
+                </p>
+
                 <p>Score: {{athlete.s}} Max: {{getMaxScore(athlete)}}</p>
             </div>
             <br>
             <div class="athlete-details-race-stats">
                 <ngx-charts-bar-horizontal-stacked [scheme]="getRaceStatsColorScheme(athlete)"
-                    [gradient]="raceStatsGradient" [results]="getRaceStats(athlete)" [animations]="raceStatsAnimations"
+                    [gradient]="raceStatsGradient" [results]="getRaceStatsData(athlete)" [animations]="raceStatsAnimations"
                     [xAxis]="raceStatsShowXAxis" [yAxis]="raceStatsShowYAxis" [showDataLabel]="raceStatsShowDataLabel"
                     [barPadding]="raceStatsBarPadding" [roundDomains]="raceStatsRoundDomains">
                 </ngx-charts-bar-horizontal-stacked>
             </div>
         </div>
-
         <div class="athlete-details-gauge">
             <ngx-charts-gauge [view]="gaugeView" [scheme]="gaugeColorScheme" [results]="gaugeData"
                 [showText]="gaugeShowText" [smallSegments]="gaugeSmallSegments" [bigSegments]="gaugeBigSegments"
@@ -27,7 +34,6 @@
                 [valueFormatting]="gaugeValueFormatting">
             </ngx-charts-gauge>
         </div>
-
     </div>
 
     <div class="athlete-details-plot">
@@ -37,18 +43,18 @@
             [gradient]="gradient" [rangeFillOpacity]="0.1">
 
             <ng-template #tooltipTemplate let-model="model">
-                <div style="text-align: center; margin: 0; padding: 0;">
+                <div class="tooltip-template">
                     <ul>
                         <h3>{{model.extra.race}}</h3>
-                        <p>{{model.name | date:'mediumDate'}}</p>
+                        <h2>{{model.value}}</h2>
                     </ul>
                 </div>
             </ng-template>
 
             <ng-template #seriesTooltipTemplate let-model="model">
-                <div *ngFor="let item of model" style="text-align: center;">
+                <div *ngFor="let item of model" class="series-tooltip-template">
                     <h3>{{item.extra.race}}</h3>
-                    <p>{{item.name | date:'mediumDate'}}</p>
+                    <h2>{{item.value}}</h2>
                     <p>{{item.extra.group}} {{item.extra.rank}}/{{item.extra.size}}</p>
                 </div>
             </ng-template>
@@ -71,7 +77,7 @@
             <ng-container matColumnDef="race">
                 <th mat-header-cell *matHeaderCellDef>Race</th>
                 <td mat-cell *matCellDef="let row">
-                    <a [routerLink]="['/race']" [queryParams]="{race: row.race, date: row.date}" class="invisible-link">
+                    <a [routerLink]="['/race', row.race, row.date]" class="invisible-link">
                         {{row.race}}
                     </a>
                 </td>
@@ -136,28 +142,10 @@
             <ng-container matColumnDef="level">
                 <th mat-header-cell *matHeaderCellDef>Level</th>
                 <td mat-cell *matCellDef="let row">
-                    <!-- <div *ngIf="getScoreLevel(row.ns)!=getScoreLevel(row.ps)" style="display: inline"
-                        [ngStyle]="getFirstLetterStyle(row.ns)">
-                        <div *ngIf="row.ns>row.ps" style="display: inline">
-                            &#x25B2;
-                        </div>
-                        <div *ngIf="row.ns<row.ps" style="display: inline">
-                            &#x25BC;
-                        </div>
-                    </div> -->
                     <a [routerLink]="['/about']" fragment="level" class="invisible-link"
                         [ngStyle]="getScoreStyle(row.ns)">
                         <span
                             [ngStyle]="getFirstLetterStyle(row.ns)">{{getLevelChangeSymbol(row.ps, row.ns)}}{{getScoreLevel(row.ns).substr(0, 1)}}</span>{{getScoreLevel(row.ns).substr(1)}}
-                        <!--
-                                <div *ngIf="row.ns>=row.ps" style="display: inline">
-                                    &#x25B2;
-                                </div>
-                                <div *ngIf="row.ns<row.ps" style="display: inline">
-                                    &#x25BC;
-                                </div> -->
-                        <!-- </div> -->
-
                     </a>
                 </td>
             </ng-container>

@@ -53,6 +53,16 @@
   margin-left: 5%;
 }
 
+.tooltip-template {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.series-tooltip-template {
+  text-align: center;
+}
+
 ul {
   list-style: none;
   margin: 0;

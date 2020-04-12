@@ -27,7 +27,6 @@ export class AthleteDetailsTableComponent implements OnInit {
   triscoreApi: TriscoreApi | null;
   athlete$: Observable<TriscoreAthlete>;
   plotData: any;
-  gaugeData: any;
 
   swimAvgPerf: number;
   bikeAvgPerf: number;
@@ -43,13 +42,10 @@ export class AthleteDetailsTableComponent implements OnInit {
 
   raceStatsGradient: boolean = false;
   raceStatsAnimations: boolean = false;
-
   raceStatsShowXAxis: boolean = false;
   raceStatsShowYAxis: boolean = true;
-
   raceStatsShowDataLabel: boolean = true;
   raceStatsRoundDomains: boolean = true;
-
   raceStatsBarPadding: number = 4;
 
   view: any[] = [700, 300];
@@ -69,6 +65,7 @@ export class AthleteDetailsTableComponent implements OnInit {
 
   colorScheme = {};
 
+  gaugeData: any;
   gaugeColorScheme = {};
   gaugeView: any[] = [350, 300];
   gaugeShowText: boolean = true;
@@ -77,7 +74,6 @@ export class AthleteDetailsTableComponent implements OnInit {
   gaugeUnits: string = "";
   gaugeStartAngle: number = -120;
   gaugeAngleSpan: number = 240;
-
   gaugeValueFormatting: any;
 
   constructor(
@@ -156,7 +152,7 @@ export class AthleteDetailsTableComponent implements OnInit {
     return athlete.h.filter(item => item.type == type && item.st == 'ok').length;
   }
 
-  getRaceStats(athlete: TriscoreAthlete) {
+  getRaceStatsData(athlete: TriscoreAthlete) {
     return [
       {
         'name': 'Full',
@@ -186,7 +182,6 @@ export class AthleteDetailsTableComponent implements OnInit {
       }
     ]
   }
-
 
   getLevelChangeSymbol(oldScore: number, newScore: number) {
     if (this.getScoreLevel(oldScore) != this.getScoreLevel(newScore)) {

@@ -1,16 +1,16 @@
 
 
 import { HttpClient } from '@angular/common/http';
-import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, switchMap, startWith } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Observable, of as observableOf, merge } from 'rxjs';
+import { catchError, map, switchMap, startWith, delay } from 'rxjs/operators';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { GetCountryFlag, GetCountryNames, IsValidCountryName } from '../utils/country'
 import { GetScoreStyle, GetFirstLetterStyle, GetScoreLevelShort } from '../utils/score-color'
 import { FormControl } from '@angular/forms';
-import { TriscoreApi, TriscoreRaceResult } from "../triscore-api/triscore-api";
+import { TriscoreApi, TriscoreRaceResult, TriscoreRaceInfo } from "../triscore-api/triscore-api";
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AgeGroupCategory, GetAgeGroupCategories, IsValidAgeGroup } from "../utils/age-groups"
 
@@ -26,12 +26,13 @@ import { AgeGroupCategory, GetAgeGroupCategories, IsValidAgeGroup } from "../uti
     ]),
   ],
 })
-export class RaceDetailsTableComponent implements AfterViewInit {
+export class RaceDetailsTableComponent implements OnInit {
   displayedColumns: string[] = ['overall-rank', 'name', 'country', 'age-group', 'finish', 'size', 'age-rank'];
 
   ageGroupControl = new FormControl();
   ageGroupCategories: AgeGroupCategory[];
 
+  raceInfo$: Observable<TriscoreRaceInfo>;
   triscoreApi: TriscoreApi | null;
   results: TriscoreRaceResult[];
 
@@ -50,6 +51,36 @@ export class RaceDetailsTableComponent implements AfterViewInit {
 
   expandedElement: TriscoreRaceResult | null;
 
+  raceElevationPlotData: any;
+  raceElevationPlotColorScheme = {
+    domain: ['#000000', '#000000'],
+    selectable: true,
+    group: 'Ordinal',
+  };
+
+  raceElevationPlotShowYAxis: boolean = true;
+  raceElevationPlotShowDataLabel: boolean = true;
+  raceElevationPlotRoundDomains: boolean = true;
+  raceElevationPlotBarPadding: number = 4;
+  raceElevationGradient: boolean = false;
+  raceElevationPlotShowGridLines: boolean = false;
+
+  // view = [300, 150];
+
+  raceParticipantsPlotColorScheme = {
+    domain: ['#5AA454', '#E44D24'],
+    selectable: true,
+    group: 'Ordinal',
+  };
+  raceParticipantsPlotShowXAxis: boolean = true;
+  raceParticipantsPlotXAxisLabel: string = 'Participants';
+  raceParticipantsPlotShowXAxisLabel: boolean = true;
+  raceParticipantsPlotShowYAxis: boolean = true;
+  raceParticipantsPlotShowDataLabel: boolean = true;
+  raceParticipantsPlotRoundDomains: boolean = true;
+  raceParticipantsPlotBarPadding: number = 4;
+  raceParticipantsPlotShowGridLines: boolean = false;
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('table', { read: ElementRef }) table: ElementRef;
@@ -64,8 +95,30 @@ export class RaceDetailsTableComponent implements AfterViewInit {
     this.ageGroupCategories = GetAgeGroupCategories();
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.triscoreApi = new TriscoreApi(this._httpClient);
+
+    this.raceInfo$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.raceName = params.get('name');
+        this.raceDate = params.get('date');
+        return this.triscoreApi!.getRaceInfo(this.raceName, this.raceDate);
+      }
+      ),
+      map(raceDetailsResponse => {
+        this.raceElevationPlotData = [
+          {
+            'name': 'Bike Elevation',
+            'value': Math.round(raceDetailsResponse.data.distance.b.e)
+          },
+          {
+            'name': 'Run Elevation ',
+            'value': Math.round(raceDetailsResponse.data.distance.r.e)
+          }
+        ];
+        return raceDetailsResponse.data;
+      })
+    );
 
     this.sort.sortChange.subscribe(() => {
       this.paginator.pageIndex = 0;
@@ -83,7 +136,6 @@ export class RaceDetailsTableComponent implements AfterViewInit {
       }
     });
 
-
     this.ageGroupControl.valueChanges.subscribe(data => {
       this.paginator.pageIndex = 0;
       this.navigateToCurrentParams();
@@ -91,6 +143,7 @@ export class RaceDetailsTableComponent implements AfterViewInit {
 
     this.route.queryParamMap.pipe(
       startWith(),
+      delay(0),
       switchMap(params => {
         this.isLoadingResults = true;
 
@@ -117,9 +170,6 @@ export class RaceDetailsTableComponent implements AfterViewInit {
 
   needToFixParams(params) {
     var fixed = false;
-
-    this.raceName = params.get('n');
-    this.raceDate = params.get('d');
 
     var pageIndex = this.getValidPageIndex(params.get('pi') || '');
     if (pageIndex != this.paginator.pageIndex) {
@@ -232,8 +282,6 @@ export class RaceDetailsTableComponent implements AfterViewInit {
 
   navigateToCurrentParams() {
     var queryParams = {};
-    queryParams['n'] = this.raceName;
-    queryParams['d'] = this.raceDate;
     queryParams['pi'] = this.paginator.pageIndex;
     queryParams['ps'] = this.paginator.pageSize;
     queryParams['s'] = this.sort.active;
@@ -241,7 +289,55 @@ export class RaceDetailsTableComponent implements AfterViewInit {
     queryParams['a'] = this.athleteNameFilter;
     queryParams['c'] = this.countryControl.value || '';
     queryParams['g'] = this.ageGroupControl.value || '';
-    this.router.navigate(['/race'], { queryParams: queryParams, queryParamsHandling: 'merge' });
+    console.log('navigateToCurrentParams name: ' + this.raceName + ' date: ' + this.raceDate);
+    // this.router.navigate(['/race', this.raceName, this.raceDate], { queryParams: queryParams, queryParamsHandling: 'merge' });
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: queryParams,
+        queryParamsHandling: 'merge',
+      });
+  }
+
+  getRaceParticipantsPlotData(raceInfo: TriscoreRaceInfo) {
+    // <li>Total: {{raceInfo.stats.t}}</li>
+    // <li>Men/Women: {{raceInfo.stats.m}}/{{raceInfo.stats.f}}</li>
+    // <li>Finished: {{raceInfo.stats.s}}</li>
+    // <li>Not Finished: {{raceInfo.stats.t - raceInfo.stats.s}}</li>
+    return [
+      // {
+      //   'name': 'total',
+      //   'value': raceInfo.stats.t
+      // },
+      {
+        'name': 'finished',
+        'value': raceInfo.stats.s
+      },
+      {
+        'name': 'not finished',
+        'value': raceInfo.stats.t - raceInfo.stats.s
+      },
+      // {
+      //   'name': 'men',
+      //   'value': raceInfo.stats.m
+      // },
+      // {
+      //   'name': 'women',
+      //   'value': raceInfo.stats.f
+      // },
+    ]
+  }
+
+  getSwimType(t: string) {
+    if (t == 'o') {
+      return 'ocean';
+    } else if (t == 'l') {
+      return 'lake';
+    } else if (t == 'h') {
+      return 'harbor';
+    }
+    return 'unknown';
   }
 
   filterCountryName(value: string): string[] {

@@ -2,17 +2,57 @@ table {
   width: 100%;
 }
 
-.hidden {
-  visibility: hidden;
-}
-
-.visible {
-  visibility: visible;
-}
-
 .race-details-container {
-  /* width: 922px; */
+  position: relative;
+  overflow: auto;
+}
+
+.race-date-location {
+  font-weight: lighter;
+}
+
+.race-details-section {
+  width: 80%;
+  height: 200px;
   margin: auto;
+  padding: 10px;
+  margin-bottom: 40px;
+}
+
+.race-details-summary {
+  width: 38%;
+  margin-left: 6%;
+  padding-top: 3%;
+  position: relative;
+  float: left;
+}
+
+.race-details-summary h2 {
+  margin-bottom: 0;
+}
+
+.race-details-summary p {
+  margin-top: 0;
+}
+
+.race-elevation-plot {
+  height: 60px;
+  width: 250px;
+  margin-left: 0%;
+}
+
+.race-participants-plot {
+  margin-left: 45%;
+  margin-top: 5%;
+  width: 500px;
+  height: 180px;
+  line-height: 32px;
+}
+
+.race-details-results {
+  margin: auto;
+  padding: 7px;
+  width: 80%;
 }
 
 .score-table-container {
@@ -136,7 +176,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   font-size: 0.75em;
   height: 11px;
   color: #7c807bd9;
-  /* width: 75%; */
   margin: 0px auto;
 }
 

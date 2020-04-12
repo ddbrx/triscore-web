@@ -1,16 +1,61 @@
-<!-- <div *ngIf="race" class="race-details-container">
+<div *ngIf="raceInfo$ | async as raceInfo" class="race-details-container">
     <div class="race-details-section">
-        <h2><a [routerLink]="['/race', race.name, race.date]" class="invisible-link">{{race.name}}</a></h2>
-        <p>{{race.date}}</p>
+        <div class="race-details-summary">
+            <h2>
+                <a [routerLink]="['/race', raceInfo.name, raceInfo.date]" class="invisible-link">
+                    {{raceInfo.name}}
+                </a>
+            </h2>
+            <p class="race-date-location">{{raceInfo.date}} {{getCountryFlag(raceInfo.location.c)}} {{raceInfo.location.d}}</p>
+
+            <div class="race-elevation-plot">
+                <!-- <p>Elevation, meters</p> -->
+                <ngx-charts-bar-horizontal [scheme]="raceElevationPlotColorScheme" [results]="raceElevationPlotData"
+                    [yAxis]="raceElevationPlotShowYAxis" [showDataLabel]="raceElevationPlotShowDataLabel"
+                    [barPadding]="raceElevationPlotBarPadding" [roundDomains]="raceElevationPlotRoundDomains"
+                    [gradient]="raceElevationGradient" [showGridLines]="raceElevationPlotShowGridLines">
+                </ngx-charts-bar-horizontal>
+            </div>
+
+            <!--
+            <ul>
+                <li>Swim: {{getSwimType(raceInfo.distance.s.t)}}</li>
+                <li>Bike Elevation: {{raceInfo.distance.b.e}}</li>
+                <li>Run Elevation: {{raceInfo.distance.r.e}}</li>
+            </ul> -->
+        </div>
+
+        <!-- <ul>
+    <li>Total: {{raceInfo.stats.t}}</li>
+    <li>Men/Women: {{raceInfo.stats.m}}/{{raceInfo.stats.f}}</li>
+    <li>Finished: {{raceInfo.stats.s}}</li>
+    <li>Not Finished: {{raceInfo.stats.t - raceInfo.stats.s}}</li>
+</ul> -->
+
+
+        <div class="race-participants-plot">
+            <!-- <ngx-charts-bar-horizontal [scheme]="raceParticipantsPlotColorScheme"
+                [results]="getRaceParticipantsPlotData(raceInfo)" [xAxis]="raceParticipantsPlotShowXAxis"
+                [yAxis]="raceParticipantsPlotShowYAxis" [xAxisLabel]="raceParticipantsPlotXAxisLabel"
+                [showXAxisLabel]="raceParticipantsPlotShowXAxisLabel"
+                [showDataLabel]="raceParticipantsPlotShowDataLabel" [barPadding]="raceParticipantsPlotBarPadding"
+                [roundDomains]="raceParticipantsPlotRoundDomains" [showGridLines]="raceParticipantsPlotShowGridLines">
+            </ngx-charts-bar-horizontal> -->
+
+            <ngx-charts-advanced-pie-chart [scheme]="raceParticipantsPlotColorScheme" [results]="getRaceParticipantsPlotData(raceInfo)">
+            </ngx-charts-advanced-pie-chart>
+        </div>
     </div>
-</div> -->
+</div>
+
 
 <div class="race-details-results">
     <form class="filters-form">
         <mat-form-field class="name-form-field">
             <mat-label class="search-label">Name filter</mat-label>
-            <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="athleteNameFilter" type="text"
-                minlength="3" (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel" class="search-input">
+            <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="athleteNameFilter"
+                type="text" minlength="3" (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel"
+                class="search-input">
 
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-input">
                 <div *ngIf="name.errors.minlength">
@@ -33,14 +78,14 @@
         <mat-form-field class="age-group-form-field">
             <mat-label>Age group filter</mat-label>
             <mat-select [formControl]="ageGroupControl">
-              <mat-option>-- None --</mat-option>
-              <mat-optgroup *ngFor="let ageGroupCategorie of ageGroupCategories" [label]="ageGroupCategorie.name">
-                <mat-option *ngFor="let ageGroup of ageGroupCategorie.groups" [value]="ageGroup">
-                  {{ageGroup}}
-                </mat-option>
-              </mat-optgroup>
+                <mat-option>-- None --</mat-option>
+                <mat-optgroup *ngFor="let ageGroupCategorie of ageGroupCategories" [label]="ageGroupCategorie.name">
+                    <mat-option *ngFor="let ageGroup of ageGroupCategorie.groups" [value]="ageGroup">
+                        {{ageGroup}}
+                    </mat-option>
+                </mat-optgroup>
             </mat-select>
-          </mat-form-field>
+        </mat-form-field>
     </form>
 
     <table #table mat-table [dataSource]="results" id="race-table-id" class="race-table" matSort matSortActive="finish"
