@@ -9,40 +9,14 @@
             <p class="race-date-location">{{raceInfo.date}} {{getCountryFlag(raceInfo.location.c)}} {{raceInfo.location.d}}</p>
 
             <div class="race-elevation-plot">
-                <!-- <p>Elevation, meters</p> -->
                 <ngx-charts-bar-horizontal [scheme]="raceElevationPlotColorScheme" [results]="raceElevationPlotData"
-                    [yAxis]="raceElevationPlotShowYAxis" [showDataLabel]="raceElevationPlotShowDataLabel"
-                    [barPadding]="raceElevationPlotBarPadding" [roundDomains]="raceElevationPlotRoundDomains"
-                    [gradient]="raceElevationGradient" [showGridLines]="raceElevationPlotShowGridLines">
+                    [yAxis]="raceElevationPlotShowYAxis" [showDataLabel]="raceElevationPlotShowDataLabel" [animations]="raceElevationPlotAnimations">
                 </ngx-charts-bar-horizontal>
             </div>
-
-            <!--
-            <ul>
-                <li>Swim: {{getSwimType(raceInfo.distance.s.t)}}</li>
-                <li>Bike Elevation: {{raceInfo.distance.b.e}}</li>
-                <li>Run Elevation: {{raceInfo.distance.r.e}}</li>
-            </ul> -->
         </div>
 
-        <!-- <ul>
-    <li>Total: {{raceInfo.stats.t}}</li>
-    <li>Men/Women: {{raceInfo.stats.m}}/{{raceInfo.stats.f}}</li>
-    <li>Finished: {{raceInfo.stats.s}}</li>
-    <li>Not Finished: {{raceInfo.stats.t - raceInfo.stats.s}}</li>
-</ul> -->
-
-
         <div class="race-participants-plot">
-            <!-- <ngx-charts-bar-horizontal [scheme]="raceParticipantsPlotColorScheme"
-                [results]="getRaceParticipantsPlotData(raceInfo)" [xAxis]="raceParticipantsPlotShowXAxis"
-                [yAxis]="raceParticipantsPlotShowYAxis" [xAxisLabel]="raceParticipantsPlotXAxisLabel"
-                [showXAxisLabel]="raceParticipantsPlotShowXAxisLabel"
-                [showDataLabel]="raceParticipantsPlotShowDataLabel" [barPadding]="raceParticipantsPlotBarPadding"
-                [roundDomains]="raceParticipantsPlotRoundDomains" [showGridLines]="raceParticipantsPlotShowGridLines">
-            </ngx-charts-bar-horizontal> -->
-
-            <ngx-charts-advanced-pie-chart [scheme]="raceParticipantsPlotColorScheme" [results]="getRaceParticipantsPlotData(raceInfo)">
+            <ngx-charts-advanced-pie-chart [scheme]="raceParticipantsPlotColorScheme" [results]="getRaceParticipantsPlotData(raceInfo)" [animations]="raceParticipantsPlotAnimations">
             </ngx-charts-advanced-pie-chart>
         </div>
     </div>

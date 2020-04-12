@@ -60,12 +60,7 @@ export class RaceDetailsTableComponent implements OnInit {
 
   raceElevationPlotShowYAxis: boolean = true;
   raceElevationPlotShowDataLabel: boolean = true;
-  raceElevationPlotRoundDomains: boolean = true;
-  raceElevationPlotBarPadding: number = 4;
-  raceElevationGradient: boolean = false;
-  raceElevationPlotShowGridLines: boolean = false;
-
-  // view = [300, 150];
+  raceElevationPlotAnimations: boolean = true;
 
   raceParticipantsPlotColorScheme = {
     domain: ['#5AA454', '#E44D24'],
@@ -80,6 +75,7 @@ export class RaceDetailsTableComponent implements OnInit {
   raceParticipantsPlotRoundDomains: boolean = true;
   raceParticipantsPlotBarPadding: number = 4;
   raceParticipantsPlotShowGridLines: boolean = false;
+  raceParticipantsPlotAnimations: boolean = false;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

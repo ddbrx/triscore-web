@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-material-app": {
+    "triscore-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-material-app",
+            "outputPath": "dist/triscore-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-material-app:build"
+            "browserTarget": "triscore-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-material-app:build:production"
+              "browserTarget": "triscore-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-material-app:build"
+            "browserTarget": "triscore-app:build"
           }
         },
         "test": {
@@ -113,16 +113,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-material-app:serve"
+            "devServerTarget": "triscore-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-material-app:serve:production"
+              "devServerTarget": "triscore-app:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "angular-material-app"
+  "defaultProject": "triscore-app"
 }
