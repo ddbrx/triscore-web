@@ -285,8 +285,6 @@ export class RaceDetailsTableComponent implements OnInit {
     queryParams['a'] = this.athleteNameFilter;
     queryParams['c'] = this.countryControl.value || '';
     queryParams['g'] = this.ageGroupControl.value || '';
-    console.log('navigateToCurrentParams name: ' + this.raceName + ' date: ' + this.raceDate);
-    // this.router.navigate(['/race', this.raceName, this.raceDate], { queryParams: queryParams, queryParamsHandling: 'merge' });
     this.router.navigate(
       [],
       {

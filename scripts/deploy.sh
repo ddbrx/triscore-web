@@ -9,4 +9,4 @@ echo ===> Builing prod version
 ng build --prod
 
 echo ===> Copy from $SOURCE to $DESTINATION
-rsync -avR $SOURCE $DESTINATION
+rsync -aR $SOURCE $DESTINATION
