@@ -48,15 +48,15 @@ table {
   }
 
   .name-form-field {
-    width: 57%;
+    width: 40%;
   }
 
   .country-form-field {
-    width: 23%;
+    width: 35%;
   }
 
   .race-type-form-field {
-    width: 20%;
+    width: 25%;
   }
 
   .invalid-input {
