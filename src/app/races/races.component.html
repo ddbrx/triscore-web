@@ -11,7 +11,7 @@
             <mat-form-field class="name-form-field">
                 <mat-label class="search-label">Name</mat-label>
                 <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="nameFilter"
-                    type="text" minlength="3" (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel"
+                    type="text" minlength="3" (change)="name.valid && nameFilterChanged()" #name="ngModel"
                     class="search-input">
 
                 <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-input">
