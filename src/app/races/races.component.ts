@@ -17,7 +17,7 @@ import { GetRaceTypes, IsValidRaceType } from "../utils/race-types"
   templateUrl: 'races.component.html'
 })
 export class RacesTableComponent implements AfterViewInit {
-  displayedColumns: string[] = ['date', 'name', 'country', 'type', 'total', 'finished', 'percent'];
+  displayedColumns: string[] = ['date', 'name', 'country', 'total', 'finished', 'percent'];
 
   triscoreApi: TriscoreApi | null;
   triscoreRaces: TriscoreRaceInfo[];

@@ -30,16 +30,19 @@ table {
   }
 
   .mat-column-country {
-    max-width: 75px;
+    min-width: 30px;
     text-overflow: ellipsis;
   }
 
   .mat-column-total,
-  .mat-column-finished,
-  .mat-column-percent,
-  .mat-column-type {
-    max-width: 40px;
+  .mat-column-finished {
+    min-width: 35px;
   }
+
+  .mat-column-percent {
+    max-width: 25px;
+  }
+
 
   .mat-form-field {
     font-size: 14px;
