@@ -115,6 +115,7 @@ tr.example-element-row:not(.example-expanded-row):hover {
 tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
 }
+
 /*
 .athlete-races-container {
   display: flex;
@@ -122,22 +123,38 @@ tr.example-element-row:not(.example-expanded-row):active {
   min-width: 100px;
 } */
 
+.mat-column-index {
+  min-width: 25px;
+}
+
 .mat-column-date {
-  width: 100px;
-  overflow: auto;
+  min-width: 50px;
 }
 
 .mat-column-race {
-  width: 226px;
-  overflow: auto;
+  min-width: 100px;
+  max-width: 150px;
+  text-overflow: ellipsis;
 }
 
 .mat-column-level {
-  width: 90px;
+  min-width: 75px;
 }
 
-.mat-column-type, .mat-column-size, .mat-column-time_rank, .mat-column-seed {
-  max-width: 30px;
+.mat-column-finish {
+  min-width: 75px;
+}
+
+.mat-column-type, .mat-column-size, .mat-column-rank, .mat-column-seed, .mat-column-time-rank, .mat-column-delta, .mat-column-score {
+  min-width: 40px;
+}
+
+.mat-column-level {
+  min-width: 60px;
+}
+
+.mat-column-age-group {
+  min-width: 50px;
 }
 
 .example-element-row td {

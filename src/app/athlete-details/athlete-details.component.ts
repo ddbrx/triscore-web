@@ -36,7 +36,7 @@ export class AthleteDetailsTableComponent implements OnInit {
   expandedElement: TriscoreRaceResult | null;
 
   displayedColumns: string[] = [
-    'index', 'date', 'race', 'type', 'group', 'finish', 'size', 'rank', 'seed', 'time_rank', 'raw_delta', 'delta', 'score', 'level'];
+    'index', 'date', 'race', 'type', 'age-group', 'finish', 'size', 'rank', 'seed', 'time-rank', 'delta', 'score', 'level'];
 
   margin = { top: 40, right: 20, bottom: 30, left: 40 };
 

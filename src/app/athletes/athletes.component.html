@@ -47,10 +47,10 @@
 
     <table #table mat-table [dataSource]="triscoreAthletes" id="score-table-id" class="score-table" matSort
       matSortActive="score" matSortDirection="desc" matSortDisableClear multiTemplateDataRows>
-      <ng-container matColumnDef="rank">
-        <th mat-header-cell *matHeaderCellDef>Rank</th>
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let athlete">
-          {{athlete.i + ' (' + athlete.r + ')'}}
+          {{athlete.i}}
         </td>
       </ng-container>
 

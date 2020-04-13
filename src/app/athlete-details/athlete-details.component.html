@@ -73,7 +73,7 @@
 
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef>Date</th>
-                <td mat-cell *matCellDef="let row">{{row.date}}</td>
+                <td mat-cell *matCellDef="let row">{{row.date|date:'mediumDate'}}</td>
             </ng-container>
 
             <ng-container matColumnDef="race">
@@ -90,7 +90,7 @@
                 <td mat-cell *matCellDef="let row">{{row.type}}</td>
             </ng-container>
 
-           <ng-container matColumnDef="group">
+           <ng-container matColumnDef="age-group">
                 <th mat-header-cell *matHeaderCellDef>Group</th>
                 <td mat-cell *matCellDef="let row">{{row.a}}</td>
             </ng-container>
@@ -116,9 +116,9 @@
                 <td mat-cell *matCellDef="let row">{{row.vsr | number:'1.0-0'}}</td>
             </ng-container>
 
-            <ng-container matColumnDef="time_rank">
-                <th mat-header-cell *matHeaderCellDef>TRank<a [routerLink]="['/about']" fragment="time-rank"
-                        class="invisible-link">*</a></th>
+            <ng-container matColumnDef="time-rank">
+                <th mat-header-cell *matHeaderCellDef><a [routerLink]="['/about']" fragment="time-rank"
+                        class="invisible-link">TRank</a></th>
                 <td mat-cell *matCellDef="let row">{{row.vtr | number:'1.0-0'}}</td>
             </ng-container>
 

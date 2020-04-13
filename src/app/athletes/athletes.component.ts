@@ -17,7 +17,7 @@ import { AgeGroupCategory, GetAgeGroupCategories, IsValidAgeGroup } from "../uti
   templateUrl: 'athletes.component.html'
 })
 export class AthletesTableComponent implements AfterViewInit {
-  displayedColumns: string[] = ['rank', 'name', 'country', 'age-group', 'races', 'score'];
+  displayedColumns: string[] = ['index', 'name', 'country', 'age-group', 'races', 'score'];
 
   ageGroupControl = new FormControl();
   ageGroupCategories: AgeGroupCategory[];

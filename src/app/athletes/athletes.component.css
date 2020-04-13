@@ -13,7 +13,6 @@ table {
   min-width: 100px;
 }
 
-
 .mat-header-cell {
   flex-direction: column;
   justify-content: right;
@@ -25,14 +24,15 @@ table {
   max-height: 300px;
 }
 
-.mat-column-rank {
-  width: auto;
-  max-width: 30px;
-  overflow: auto;
+.mat-column-index {
+  min-width: 20px;
+  /* width: auto; */
+  max-width: 20px;
 }
 
 .mat-column-name {
-  max-width: 150px;
+  min-width: 100px;
+  /* max-width: 200px; */
   text-overflow: ellipsis;
 }
 
