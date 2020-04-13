@@ -13,16 +13,22 @@ table {
   min-width: 100px;
 }
 
+
+.mat-header-cell {
+  flex-direction: column;
+  justify-content: right;
+}
+
 .mat-table {
   text-align: left;
   overflow: auto;
   max-height: 300px;
 }
 
-.mat-column-rank,
-.mat-column-group {
+.mat-column-rank {
   width: auto;
   max-width: 30px;
+  overflow: auto;
 }
 
 .mat-column-name {
@@ -30,11 +36,20 @@ table {
   text-overflow: ellipsis;
 }
 
-.mat-column-country,
-.mat-column-age-group,
 .mat-column-races,
 .mat-column-score {
   max-width: 50px;
+}
+
+.mat-column-country {
+  min-width: 50px;
+  margin: 0px !important;
+  /* display: inline !important; */
+  /* text-overflow: ellipsis; */
+}
+
+.mat-column-age-group {
+  min-width: 45px;
 }
 
 .mat-form-field {

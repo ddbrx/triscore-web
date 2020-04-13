@@ -9,7 +9,7 @@
   <div class="score-table-container">
     <form class="filters-form">
       <mat-form-field class="name-form-field">
-        <mat-label class="search-label">Name filter</mat-label>
+        <mat-label class="search-label">Name</mat-label>
 
         <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="nameFilter" type="text"
           minlength="3" (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel" class="search-input">
@@ -23,7 +23,7 @@
       </mat-form-field>
 
       <mat-form-field class="country-form-field">
-        <mat-label class="search-label">Country filter</mat-label>
+        <mat-label class="search-label">Country</mat-label>
         <input matInput type="text" placeholder="Ex. Germany" class="country-input" [formControl]="countryControl"
           [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
@@ -34,7 +34,7 @@
       </mat-form-field>
 
       <mat-form-field class="age-group-form-field">
-        <mat-label>Age group filter</mat-label>
+        <mat-label>Group</mat-label>
         <mat-select [formControl]="ageGroupControl">
           <mat-option>-- None --</mat-option>
           <mat-optgroup *ngFor="let ageGroupCategorie of ageGroupCategories" [label]="ageGroupCategorie.name">
@@ -68,13 +68,11 @@
 
       <ng-container matColumnDef="country">
         <th mat-header-cell *matHeaderCellDef>Country</th>
-        <td mat-cell *matCellDef="let athlete">
-          {{getCountryFlag(athlete.c)}}
-          {{athlete.c}}</td>
+        <td mat-cell *matCellDef="let athlete">{{getCountryFlag(athlete.c)}}{{athlete.c}}</td>
       </ng-container>
 
       <ng-container matColumnDef="age-group">
-        <th mat-header-cell *matHeaderCellDef>Age Group</th>
+        <th mat-header-cell *matHeaderCellDef>Group</th>
         <td mat-cell *matCellDef="let athlete">{{athlete.a}}</td>
       </ng-container>
 

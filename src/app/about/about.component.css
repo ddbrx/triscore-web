@@ -10,3 +10,8 @@ markdown ::ng-deep .about-link {
 markdown ::ng-deep .about-link:hover {
     color: #db4c3f;
 }
+
+.about-page {
+    width: 90%;
+    margin: auto;
+}

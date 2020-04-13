@@ -21,7 +21,7 @@ table {
   }
 
   .mat-column-date {
-    max-width: 50px;
+    min-width: 50px;
   }
 
   .mat-column-name {
@@ -38,7 +38,7 @@ table {
   .mat-column-finished,
   .mat-column-percent,
   .mat-column-type {
-    max-width: 30px;
+    max-width: 40px;
   }
 
   .mat-form-field {
@@ -62,22 +62,6 @@ table {
   .invalid-input {
     font-size: smaller;
     opacity: 0.3;
-  }
-
-  .athlete-history-table {
-    text-align: left;
-    width: 100%;
-  }
-
-  .athlete-history-table tr:nth-child(2n+1) {background: #e8eaeb;}
-  .athlete-history-table th {background: #bfc2c4;}
-
-  .athlete-history-table td, .athlete-history-table th {
-    border-width: 0px;
-    padding: 0.4em;
-    font-size: 0.9em;
-    text-align: left;
-    overflow: hidden;
   }
 
   .history-table-container {

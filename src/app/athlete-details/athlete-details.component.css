@@ -1,18 +1,19 @@
 .athlete-details-container {
-  position: relative;
-  overflow: auto;
+  /* position: relative; */
+  /* overflow: auto; */
+  margin: auto;
 }
 
 .athlete-details-section {
-  width: 80%;
-  height: 200px;
+  /* width: 80%; */
+  /* height: 200px; */
   margin: auto;
   padding: 10px;
 }
 
 .athlete-details-summary {
   width: 30%;
-  margin-left: 10%;
+  margin-left: 20%;
   padding-top: 11%;
   position: relative;
   float: left;
@@ -38,9 +39,10 @@
 }
 
 .athlete-details-gauge {
-  margin-left: 40%;
+  margin-left: 50%;
   padding-top: 4%;
-  width: 360px;
+  width: 350px;
+  height: 300px;
 }
 
 .athlete-details-race-stats {
@@ -113,8 +115,12 @@ tr.example-element-row:not(.example-expanded-row):hover {
 tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
 }
-
-.athlete-races-section {}
+/*
+.athlete-races-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 100px;
+} */
 
 .mat-column-date {
   width: 100px;

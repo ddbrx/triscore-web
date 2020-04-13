@@ -9,7 +9,7 @@
     <div class="race-table-container">
         <form class="filters-form">
             <mat-form-field class="name-form-field">
-                <mat-label class="search-label">Name filter</mat-label>
+                <mat-label class="search-label">Name</mat-label>
                 <input matInput name="name" placeholder="Input name and press Enter" [(ngModel)]="nameFilter"
                     type="text" minlength="3" (keyup.enter)="name.valid && nameFilterChanged()" #name="ngModel"
                     class="search-input">
@@ -22,7 +22,7 @@
             </mat-form-field>
 
             <mat-form-field class="country-form-field">
-                <mat-label class="search-label">Country filter</mat-label>
+                <mat-label class="search-label">Country</mat-label>
                 <input matInput type="text" placeholder="Ex. Germany" class="country-input"
                     [formControl]="countryControl" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete">
@@ -33,7 +33,7 @@
             </mat-form-field>
 
             <mat-form-field class="race-type-form-field">
-                <mat-label>Race type filter</mat-label>
+                <mat-label>Type</mat-label>
                 <mat-select [formControl]="raceTypeControl">
                     <mat-option>-- None --</mat-option>
                     <mat-option *ngFor="let raceType of raceTypes" [value]="raceType">
@@ -76,12 +76,12 @@
             </ng-container>
 
             <ng-container matColumnDef="finished">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Finished</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Finish</th>
                 <td mat-cell *matCellDef="let race">{{race.stats.s}}</td>
             </ng-container>
 
             <ng-container matColumnDef="percent">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>%Finished</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>%</th>
                 <td mat-cell *matCellDef="let race">{{race.stats.p}}</td>
             </ng-container>
 
