@@ -52,7 +52,7 @@
 }
 
 .athlete-details-plot {
-  margin-left: 5%;
+  margin-left: 8%;
 }
 
 .tooltip-template {
@@ -142,15 +142,15 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 .mat-column-finish {
-  min-width: 75px;
+  min-width: 60px;
 }
 
 .mat-column-type, .mat-column-size, .mat-column-rank, .mat-column-seed, .mat-column-time-rank, .mat-column-delta, .mat-column-score {
-  min-width: 40px;
+  min-width: 35px;
 }
 
 .mat-column-level {
-  min-width: 60px;
+  min-width: 40px;
 }
 
 .mat-column-age-group {

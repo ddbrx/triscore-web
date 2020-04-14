@@ -6,22 +6,24 @@
                     {{raceInfo.name}}
                 </a>
             </h2>
-            <p class="race-date-location">{{raceInfo.date}} {{getCountryFlag(raceInfo.location.c)}} {{raceInfo.location.d}}</p>
+            <p class="race-date-location">{{raceInfo.date}} {{getCountryFlag(raceInfo.location.c)}}
+                {{raceInfo.location.d}}</p>
 
             <div class="race-elevation-plot">
                 <ngx-charts-bar-horizontal [scheme]="raceElevationPlotColorScheme" [results]="raceElevationPlotData"
-                    [yAxis]="raceElevationPlotShowYAxis" [showDataLabel]="raceElevationPlotShowDataLabel" [animations]="raceElevationPlotAnimations">
+                    [yAxis]="raceElevationPlotShowYAxis" [showDataLabel]="raceElevationPlotShowDataLabel"
+                    [animations]="raceElevationPlotAnimations">
                 </ngx-charts-bar-horizontal>
             </div>
         </div>
 
         <div class="race-participants-plot">
-            <ngx-charts-advanced-pie-chart [scheme]="raceParticipantsPlotColorScheme" [results]="getRaceParticipantsPlotData(raceInfo)" [animations]="raceParticipantsPlotAnimations">
+            <ngx-charts-advanced-pie-chart [scheme]="raceParticipantsPlotColorScheme"
+                [results]="getRaceParticipantsPlotData(raceInfo)" [animations]="raceParticipantsPlotAnimations">
             </ngx-charts-advanced-pie-chart>
         </div>
     </div>
 </div>
-
 
 <div class="race-details-results">
     <form class="filters-form">

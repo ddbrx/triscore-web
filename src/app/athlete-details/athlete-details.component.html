@@ -1,5 +1,4 @@
 <div *ngIf="athlete$ | async as athlete" class="athlete-details-container">
-
     <div class="athlete-details-section">
         <div class="athlete-details-summary">
             <h2>
@@ -38,7 +37,7 @@
         </div>
     </div>
 
-    <!-- <div class="athlete-details-plot">
+    <div class="athlete-details-plot">
         <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
             [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
             [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="plotData" [autoScale]="autoScale"
@@ -61,7 +60,7 @@
                 </div>
             </ng-template>
         </ngx-charts-line-chart>
-    </div> -->
+    </div>
 
     <div class="athlete-races-container">
         <table mat-table [dataSource]="athlete.h.slice().reverse()" multiTemplateDataRows class="mat-elevation-z8">
