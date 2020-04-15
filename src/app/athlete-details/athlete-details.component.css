@@ -23,12 +23,6 @@
   margin: 0;
 }
 
-.athlete-level-short-head {
-  position: relative;
-  font-size: small;
-  font-weight: 100;
-}
-
 .athlete-country-and-age-group {
   font-size: normal;
   font-weight: lighter;

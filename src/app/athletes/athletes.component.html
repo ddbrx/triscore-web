@@ -21,17 +21,6 @@
         </div>
       </mat-form-field>
 
-      <mat-form-field class="country-form-field">
-        <mat-label class="search-label">Country</mat-label>
-        <input matInput type="text" placeholder="Ex. Germany" class="country-input" [formControl]="countryControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let countryName of filteredCountryNames | async" [value]="countryName">
-            {{ countryName }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-
       <mat-form-field class="age-group-form-field">
         <mat-label>Group</mat-label>
         <mat-select [formControl]="ageGroupControl">
@@ -42,6 +31,17 @@
             </mat-option>
           </mat-optgroup>
         </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="country-form-field">
+        <mat-label class="search-label">Country</mat-label>
+        <input matInput type="text" placeholder="Ex. Germany" class="country-input" [formControl]="countryControl"
+          [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let countryName of filteredCountryNames | async" [value]="countryName">
+            {{ countryName }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
     </form>
 
@@ -59,15 +59,15 @@
         <td mat-cell *matCellDef="let athlete">
           <a [routerLink]="['/athlete', athlete.id]" class="invisible-link">
             <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span><span
-              [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span><sup
-              class="athlete-level-short">{{getScoreLevelShort(athlete.s)}}</sup>
+              [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span>
+            <sup class="athlete-level-short">{{getScoreLevelShort(athlete.s)}}</sup>
           </a>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="country">
         <th mat-header-cell *matHeaderCellDef>Country</th>
-        <td mat-cell *matCellDef="let athlete">{{getCountryFlag(athlete.c)}}{{athlete.c}}</td>
+        <td mat-cell *matCellDef="let athlete">{{getCountryFlag(athlete.c)}} {{athlete.c}}</td>
       </ng-container>
 
       <ng-container matColumnDef="age-group">

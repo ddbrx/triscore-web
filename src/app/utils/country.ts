@@ -1,4 +1,3 @@
-import { data as countryEmojies } from 'emoji-flags';
 import { data as countryCodes } from './country-codes.json';
 
 export function GetCountryNames(): string[] {
@@ -33,11 +32,5 @@ export function GetCountryFlag(countryFifaCode: string): string {
     return countryFifaCode;
   }
 
-  var countryAlphaTwoCode = country.a2;
-  var countryEmoji = countryEmojies.find(c => c.code == countryAlphaTwoCode);
-  if (!countryEmoji) {
-    return countryFifaCode;
-  }
-
-  return countryEmoji.emoji;
+  return country.flag;
 }

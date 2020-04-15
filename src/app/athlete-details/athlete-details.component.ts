@@ -271,10 +271,10 @@ export class AthleteDetailsTableComponent implements OnInit {
           series.push(item);
         });
 
-        var filteredSwim = athlete.h.filter(result => result.legs.s.t != 99999).map(result => (result.as - result.legs.s.tar) / (result.as - 1.));
-        var filteredBike = athlete.h.filter(result => result.legs.b.t != 99999).map(result => (result.as - result.legs.b.tar) / (result.as - 1.));
-        var filteredRun = athlete.h.filter(result => result.legs.r.t != 99999).map(result => (result.as - result.legs.r.tar) / (result.as - 1.));
-        var filteredRank = athlete.h.filter(result => result.t != 99999).map(result => (result.as - result.tar) / (result.as - 1.));
+        var filteredSwim = athlete.h.filter(result => result.legs.s.t != 99999 && result.as != 1).map(result => (result.as - result.legs.s.tar) / (result.as - 1.));
+        var filteredBike = athlete.h.filter(result => result.legs.b.t != 99999 && result.as != 1).map(result => (result.as - result.legs.b.tar) / (result.as - 1.));
+        var filteredRun = athlete.h.filter(result => result.legs.r.t != 99999 && result.as != 1).map(result => (result.as - result.legs.r.tar) / (result.as - 1.));
+        var filteredRank = athlete.h.filter(result => result.t != 99999 && result.as != 1).map(result => (result.as - result.tar) / (result.as - 1.));
 
         this.swimAvgPerf = this.toFormattedPercent(this.getAverageOrZero(filteredSwim));
         this.bikeAvgPerf = this.toFormattedPercent(this.getAverageOrZero(filteredBike));

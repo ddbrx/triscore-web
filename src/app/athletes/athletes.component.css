@@ -7,15 +7,18 @@ table {
   margin: auto;
 }
 
+.mat-cell:first-of-type {
+  padding-left: 16px;
+}
+
+.mat-header-cell:first-of-type {
+  padding-left: 16px;
+}
+
 .score-table-container {
   display: flex;
   flex-direction: column;
   min-width: 100px;
-}
-
-.mat-header-cell {
-  flex-direction: column;
-  justify-content: right;
 }
 
 .mat-table {
@@ -24,32 +27,13 @@ table {
   max-height: 300px;
 }
 
-.mat-column-index {
-  min-width: 20px;
-  /* width: auto; */
-  max-width: 20px;
-}
-
-.mat-column-name {
-  min-width: 100px;
-  /* max-width: 200px; */
-  text-overflow: ellipsis;
-}
-
-.mat-column-races,
-.mat-column-score {
-  max-width: 50px;
-}
-
 .mat-column-country {
-  min-width: 50px;
-  margin: 0px !important;
-  /* display: inline !important; */
-  /* text-overflow: ellipsis; */
+  max-width: 40px;
+  padding-right: 10px;
 }
 
 .mat-column-age-group {
-  min-width: 45px;
+  min-width: 65px;
 }
 
 .mat-form-field {
@@ -59,57 +43,20 @@ table {
 }
 
 .name-form-field {
-  width: 40%;
-}
-
-.country-form-field {
-  width: 35%;
+  width: 33%;
 }
 
 .age-group-form-field {
-  width: 25%;
+  width: 27%;
+}
+
+.country-form-field {
+  width: 40%;
 }
 
 .invalid-input {
   font-size: smaller;
   opacity: 0.3;
-}
-
-.athlete-history-table {
-  text-align: left;
-  width: 100%;
-}
-
-.athlete-history-table tr:nth-child(2n+1) {background: #e8eaeb;}
-.athlete-history-table th {background: #bfc2c4;}
-
-.athlete-history-table td, .athlete-history-table th {
-  border-width: 0px;
-  padding: 0.4em;
-  font-size: 0.9em;
-  text-align: left;
-  overflow: hidden;
-}
-
-.history-table-container {
-  position: relative;
-  max-height: 400px;
-  overflow: auto;
-  border: 1px solid black;
-}
-
-.score-increase {
-  color: green;
-}
-
-.score-decrease {
-  color: red;
-}
-
-.rated-athlete {
-  text-decoration: none !important;
-  font-weight: bold;
-  display: inline-block;
 }
 
 .loading-shade {
@@ -129,47 +76,4 @@ table {
   color: #980000;
   max-width: 360px;
   text-align: center;
-}
-
-tr.example-detail-row {
-  height: 0;
-}
-
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
-}
-
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #efefef;
-}
-
-.example-element-row td {
-  border-bottom-width: 0;
-}
-
-.example-element-detail {
-  overflow: hidden;
-  display: flex;
-}
-
-.example-element-diagram {
-  min-width: 80px;
-  border: 2px solid black;
-  padding: 8px;
-  margin: 8px 0;
-  height: 104px;
-}
-
-.example-element-symbol {
-  font-weight: bold;
-  font-size: 40px;
-  line-height: normal;
-}
-
-.example-element-description {
-  padding: 16px;
-}
-
-.example-element-description-attribution {
-  opacity: 0.5;
 }
