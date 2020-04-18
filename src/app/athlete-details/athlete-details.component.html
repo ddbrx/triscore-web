@@ -1,283 +1,303 @@
-<div *ngIf="athlete$ | async as athlete" class="athlete-details-container">
-    <div class="athlete-details-section">
-        <div class="athlete-details-summary">
-            <h2>
-                <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span><span
-                    [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span>
-            </h2>
-            <div class="athlete-country-and-age-group">
-                <p>
-                    <a [routerLink]="['/about']" fragment="level" class="invisible-link">
-                        <span
-                            [ngStyle]="getFirstLetterStyle(athlete.s)">{{getScoreLevel(athlete.s).substr(0, 1)}}</span>
-                        <span [ngStyle]="getScoreStyle(athlete.s)">{{getScoreLevel(athlete.s).substr(1)}}</span>
-                    </a>
-                </p>
-                <p>
-                    {{getCountryFlag(athlete.c)}} {{athlete.a}}
-                </p>
+<div class="athlete-details-container mat-elevation-z8">
 
-                <p>Score: {{athlete.s}} Max: {{getMaxScore(athlete)}}</p>
+    <div *ngIf="athlete$ | async as athlete">
+        <div class="athlete-details-section">
+            <div [ngStyle]="getDeviceAthleteSummaryStyle()">
+                <div [ngStyle]="getDeviceAthleteDescriptionStyle()">
+                    <h2 style="margin: 0">
+                        <span [ngStyle]="getFirstLetterStyle(athlete.s)">{{athlete.n.substr(0, 1)}}</span><span
+                            [ngStyle]="getScoreStyle(athlete.s)">{{athlete.n.substr(1)}}</span>
+                    </h2>
+                    <div class="athlete-country-and-age-group">
+                        <p>
+                            {{getCountryFlag(athlete.c)}} {{athlete.a}}
+                        </p>
+                        <br>
+                        <p>Score: {{athlete.s}}
+                            <a [routerLink]="['/about']" fragment="level" class="invisible-link">
+                                <span
+                                    [ngStyle]="getFirstLetterStyle(athlete.s)">{{getScoreLevel(athlete.s).substr(0, 1)}}</span>
+                                <span [ngStyle]="getScoreStyle(athlete.s)">{{getScoreLevel(athlete.s).substr(1)}}</span>
+                            </a>
+                        </p>
+                        <p>Max: {{getMaxScore(athlete)}}
+                            <a [routerLink]="['/about']" fragment="level" class="invisible-link">
+                                <span
+                                    [ngStyle]="getFirstLetterStyle(athlete.s)">{{getScoreLevel(getMaxScore(athlete)).substr(0, 1)}}</span>
+                                <span
+                                    [ngStyle]="getScoreStyle(getMaxScore(athlete))">{{getScoreLevel(getMaxScore(athlete)).substr(1)}}</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div [ngStyle]="getDeviceAthleteStatsStyle()">
+                    <ngx-charts-bar-horizontal-stacked [scheme]="getRaceStatsColorScheme(athlete)"
+                        [gradient]="raceStatsGradient" [results]="getRaceStatsData(athlete)"
+                        [animations]="raceStatsAnimations" [xAxis]="raceStatsShowXAxis" [yAxis]="raceStatsShowYAxis"
+                        [showDataLabel]="raceStatsShowDataLabel" [barPadding]="raceStatsBarPadding"
+                        [roundDomains]="raceStatsRoundDomains">
+                    </ngx-charts-bar-horizontal-stacked>
+                </div>
             </div>
-            <br>
-            <div class="athlete-details-race-stats">
-                <ngx-charts-bar-horizontal-stacked [scheme]="getRaceStatsColorScheme(athlete)"
-                    [gradient]="raceStatsGradient" [results]="getRaceStatsData(athlete)"
-                    [animations]="raceStatsAnimations" [xAxis]="raceStatsShowXAxis" [yAxis]="raceStatsShowYAxis"
-                    [showDataLabel]="raceStatsShowDataLabel" [barPadding]="raceStatsBarPadding"
-                    [roundDomains]="raceStatsRoundDomains">
-                </ngx-charts-bar-horizontal-stacked>
+            <div [ngStyle]="getDeviceAthleteGaugeStyle()">
+                <ngx-charts-gauge [scheme]="gaugeColorScheme" [results]="gaugeData" [showText]="gaugeShowText"
+                    [smallSegments]="gaugeSmallSegments" [bigSegments]="gaugeBigSegments" [units]="gaugeUnits"
+                    [startAngle]="gaugeStartAngle" [angleSpan]="gaugeAngleSpan"
+                    [valueFormatting]="gaugeValueFormatting">
+                </ngx-charts-gauge>
             </div>
         </div>
-        <div class="athlete-details-gauge">
-            <ngx-charts-gauge [scheme]="gaugeColorScheme" [results]="gaugeData" [showText]="gaugeShowText"
-                [smallSegments]="gaugeSmallSegments" [bigSegments]="gaugeBigSegments" [units]="gaugeUnits"
-                [startAngle]="gaugeStartAngle" [angleSpan]="gaugeAngleSpan" [valueFormatting]="gaugeValueFormatting">
-            </ngx-charts-gauge>
+
+        <div *ngIf="!isMobile()" class="athlete-score-plot">
+            <ngx-charts-line-chart [scheme]="colorScheme" [legend]="legend"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis"
+                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="plotData"
+                [autoScale]="autoScale" [gradient]="gradient" [rangeFillOpacity]="0.1">
+
+                <ng-template #tooltipTemplate let-model="model">
+                    <div class="tooltip-template">
+                        <ul>
+                            <h3>{{model.extra.race}}</h3>
+                            <h2>{{model.extra.delta}}: {{model.value}}</h2>
+                        </ul>
+                    </div>
+                </ng-template>
+
+                <ng-template #seriesTooltipTemplate let-model="model">
+                    <div *ngFor="let item of model" class="series-tooltip-template">
+                        <h3>{{item.extra.race}}</h3>
+                        <h2>{{item.value}}</h2>
+                        <p>{{item.extra.group}} {{item.extra.rank}}/{{item.extra.size}}</p>
+                    </div>
+                </ng-template>
+            </ngx-charts-line-chart>
         </div>
-    </div>
 
-    <div class="athlete-details-plot">
-        <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="plotData" [autoScale]="autoScale"
-            [gradient]="gradient" [rangeFillOpacity]="0.1">
+        <!-- <div class="athlete-races-container"> -->
+            <table mat-table [dataSource]="athlete.h" multiTemplateDataRows class="race-history-table">
+                <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef>#</th>
+                    <td mat-cell *matCellDef="let row">{{row.index}}</td>
+                </ng-container>
 
-            <ng-template #tooltipTemplate let-model="model">
-                <div class="tooltip-template">
-                    <ul>
-                        <h3>{{model.extra.race}}</h3>
-                        <h2>{{model.value}}</h2>
-                    </ul>
-                </div>
-            </ng-template>
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef>Date</th>
+                    <td mat-cell *matCellDef="let row">{{row.date|date:'mediumDate'}}</td>
+                </ng-container>
 
-            <ng-template #seriesTooltipTemplate let-model="model">
-                <div *ngFor="let item of model" class="series-tooltip-template">
-                    <h3>{{item.extra.race}}</h3>
-                    <h2>{{item.value}}</h2>
-                    <p>{{item.extra.group}} {{item.extra.rank}}/{{item.extra.size}}</p>
-                </div>
-            </ng-template>
-        </ngx-charts-line-chart>
-    </div>
+                <ng-container matColumnDef="race">
+                    <th mat-header-cell *matHeaderCellDef>Race</th>
+                    <td mat-cell *matCellDef="let row">
+                        <a [routerLink]="['/race', row.race, row.date]" class="invisible-link">
+                            {{row.race}}
+                        </a>
+                    </td>
+                </ng-container>
 
-    <div class="athlete-races-container">
-        <table mat-table [dataSource]="athlete.h.slice().reverse()" multiTemplateDataRows class="mat-elevation-z8">
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef>Type</th>
+                    <td mat-cell *matCellDef="let row">{{row.type}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef>#</th>
-                <td mat-cell *matCellDef="let row">{{row.index}}</td>
-            </ng-container>
+                <ng-container matColumnDef="age-group">
+                    <th mat-header-cell *matHeaderCellDef>Group</th>
+                    <td mat-cell *matCellDef="let row">{{row.a}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Date</th>
-                <td mat-cell *matCellDef="let row">{{row.date|date:'mediumDate'}}</td>
-            </ng-container>
+                <ng-container matColumnDef="finish">
+                    <th mat-header-cell *matHeaderCellDef>Finish</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{ row.t != 99999 ? (row.t * 1000 | date:'hh:mm':'UTC') : row.st}}
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="race">
-                <th mat-header-cell *matHeaderCellDef>Race</th>
-                <td mat-cell *matCellDef="let row">
-                    <a [routerLink]="['/race', row.race, row.date]" class="invisible-link">
-                        {{row.race}}
-                    </a>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="size">
+                    <th mat-header-cell *matHeaderCellDef>Size</th>
+                    <td mat-cell *matCellDef="let row">{{row.as}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef>Type</th>
-                <td mat-cell *matCellDef="let row">{{row.type}}</td>
-            </ng-container>
+                <ng-container matColumnDef="rank">
+                    <th mat-header-cell *matHeaderCellDef>Rank</th>
+                    <td mat-cell *matCellDef="let row">{{row.ar}}</td>
+                </ng-container>
 
-           <ng-container matColumnDef="age-group">
-                <th mat-header-cell *matHeaderCellDef>Group</th>
-                <td mat-cell *matCellDef="let row">{{row.a}}</td>
-            </ng-container>
+                <ng-container matColumnDef="seed">
+                    <th mat-header-cell *matHeaderCellDef>Seed</th>
+                    <td mat-cell *matCellDef="let row">{{row.vsr | number:'1.0-0'}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="finish">
-                <th mat-header-cell *matHeaderCellDef>Finish</th>
-                <td mat-cell *matCellDef="let row">{{ row.t != 99999 ? (row.t * 1000 | date:'H:mm:ss':'UTC') : row.st}}
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="time-rank">
+                    <th mat-header-cell *matHeaderCellDef><a [routerLink]="['/about']" fragment="time-rank"
+                            class="invisible-link">TRank</a></th>
+                    <td mat-cell *matCellDef="let row">{{row.vtr | number:'1.0-0'}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="size">
-                <th mat-header-cell *matHeaderCellDef>Size</th>
-                <td mat-cell *matCellDef="let row">{{row.as}}</td>
-            </ng-container>
+                <ng-container matColumnDef="raw_delta">
+                    <th mat-header-cell *matHeaderCellDef>RawDa</th>
+                    <td mat-cell *matCellDef="let row">{{(row.vsr - row.vtr) / row.as | number:'1.2-2'}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="rank">
-                <th mat-header-cell *matHeaderCellDef>Rank</th>
-                <td mat-cell *matCellDef="let row">{{row.ar}}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="seed">
-                <th mat-header-cell *matHeaderCellDef>Seed</th>
-                <td mat-cell *matCellDef="let row">{{row.vsr | number:'1.0-0'}}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="time-rank">
-                <th mat-header-cell *matHeaderCellDef><a [routerLink]="['/about']" fragment="time-rank"
-                        class="invisible-link">TRank</a></th>
-                <td mat-cell *matCellDef="let row">{{row.vtr | number:'1.0-0'}}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="raw_delta">
-                <th mat-header-cell *matHeaderCellDef>RawDa</th>
-                <td mat-cell *matCellDef="let row">{{(row.vsr - row.vtr) / row.as | number:'1.2-2'}}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="delta">
-                <th mat-header-cell *matHeaderCellDef>Delta</th>
-                <td mat-cell *matCellDef="let row" [ngClass]="{
+                <ng-container matColumnDef="delta">
+                    <th mat-header-cell *matHeaderCellDef>Delta</th>
+                    <td mat-cell *matCellDef="let row" [ngClass]="{
                 'score-increase' : row.da >= 0,
                 'score-decrease' : row.da < 0
              }">{{row.da > 0 ? '+' : ''}}{{ row.da }}</td>
-            </ng-container>
+                </ng-container>
 
 
-            <ng-container matColumnDef="score">
-                <th mat-header-cell *matHeaderCellDef>Score</th>
-                <td mat-cell *matCellDef="let row">{{row.ns}}</td>
-            </ng-container>
+                <ng-container matColumnDef="score">
+                    <th mat-header-cell *matHeaderCellDef>Score</th>
+                    <td mat-cell *matCellDef="let row">{{row.ns}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="level">
-                <th mat-header-cell *matHeaderCellDef>Level</th>
-                <td mat-cell *matCellDef="let row">
-                    <a [routerLink]="['/about']" fragment="level" class="invisible-link"
-                        [ngStyle]="getScoreStyle(row.ns)">
-                        <span
-                            [ngStyle]="getFirstLetterStyle(row.ns)">{{getLevelChangeSymbol(row.ps, row.ns)}}{{getScoreLevel(row.ns).substr(0, 1)}}</span>{{getScoreLevel(row.ns).substr(1)}}
-                    </a>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="level">
+                    <th mat-header-cell *matHeaderCellDef>Level</th>
+                    <td mat-cell *matCellDef="let row">
+                        <a [routerLink]="['/about']" fragment="level" class="invisible-link"
+                            [ngStyle]="getScoreStyle(row.ns)">
 
-            <ng-container matColumnDef="expandedDetail">
-                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-                    <div class="example-element-detail"
-                        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
 
-                        <table class="race-result-detail">
-                            <th></th>
-                            <th>Swim</th>
-                            <th>T1</th>
-                            <th>Bike</th>
-                            <th>T2</th>
-                            <th>Run</th>
-                            <th>Finish</th>
+                            <!-- <span
+                            [ngStyle]="getFirstLetterStyle(row.ns)">{{getLevelChangeSymbol(row.ps, row.ns)}}{{getScoreLevel(row.ns).substr(0, 1)}}</span>{{getScoreLevel(row.ns).substr(1)}} -->
 
-                            <tr>
-                                <td><b>Time</b></td>
-                                <td>
-                                    {{ element.legs.s.t != 99999 ? (element.legs.s.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
-                                </td>
-                                <td>
-                                    {{ element.legs.t1.t != 99999 ? (element.legs.t1.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
-                                </td>
-                                <td>
-                                    {{ element.legs.b.t != 99999 ? (element.legs.b.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
-                                </td>
-                                <td>
-                                    {{ element.legs.t2.t != 99999 ? (element.legs.t2.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
-                                </td>
-                                <td>
-                                    {{ element.legs.r.t != 99999 ? (element.legs.r.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
-                                </td>
-                                <td>
-                                    {{ element.t != 99999 ? (element.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b>Rank Age</b></td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.s.ar}} </div>
-                                    <div class="of-total-detail">of {{element.as}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.t1.ar}} </div>
-                                    <div class="of-total-detail">of {{element.as}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.b.ar}} </div>
-                                    <div class="of-total-detail">of {{element.as}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.t2.ar}} </div>
-                                    <div class="of-total-detail">of {{element.as}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.r.ar}} </div>
-                                    <div class="of-total-detail">of {{element.as}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.ar}} </div>
-                                    <div class="of-total-detail">of {{element.as}}</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b>Rank Gender</b></td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.s.gr}} </div>
-                                    <div class="of-total-detail">of {{element.gs}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.t1.gr}} </div>
-                                    <div class="of-total-detail">of {{element.gs}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.b.gr}} </div>
-                                    <div class="of-total-detail">of {{element.gs}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.t2.gr}} </div>
-                                    <div class="of-total-detail">of {{element.gs}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.r.gr}} </div>
-                                    <div class="of-total-detail">of {{element.gs}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.gr}} </div>
-                                    <div class="of-total-detail">of {{element.gs}}</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b>Rank Overall</b></td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.s.or}} </div>
-                                    <div class="of-total-detail">of {{element.os}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.t1.or}} </div>
-                                    <div class="of-total-detail">of {{element.os}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.b.or}} </div>
-                                    <div class="of-total-detail">of {{element.os}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.t2.or}} </div>
-                                    <div class="of-total-detail">of {{element.os}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.legs.r.or}} </div>
-                                    <div class="of-total-detail">of {{element.os}}</div>
-                                </td>
-                                <td>
-                                    <div class="total-detail"> {{element.or}} </div>
-                                    <div class="of-total-detail">of {{element.os}}</div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-            </ng-container>
+                            <span
+                                [ngStyle]="getFirstLetterStyle(row.ns)">{{getLevelChangeSymbol(row.ps, row.ns)}}{{getDeviceScoreLevel(row.ns).substr(0, 1)}}</span>{{getDeviceScoreLevel(row.ns).substr(1)}}
+                        </a>
+                    </td>
+                </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
-                [class.example-expanded-row]="expandedElement === element"
-                (click)="expandedElement = expandedElement === element ? null : element">
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-        </table>
+                <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                        <div class="expanded-athlete-detail"
+                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+                            <table class="result-legs">
+                                <th></th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Overall</th>
+                                <th>Time</th>
+                                <tr>
+                                    <td><b>Swim</b></td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.s.ar}} </div>
+                                        <div class="of-leg-rank">of {{element.as}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.s.gr}} </div>
+                                        <div class="of-leg-rank">of {{element.gs}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.s.or}} </div>
+                                        <div class="of-leg-rank">of {{element.os}}</div>
+                                    </td>
+                                    <td>
+                                        {{ element.legs.s.t != 99999 ? (element.legs.s.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>T1</b></td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.t1.ar}} </div>
+                                        <div class="of-leg-rank">of {{element.as}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.t1.gr}} </div>
+                                        <div class="of-leg-rank">of {{element.gs}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.t1.or}} </div>
+                                        <div class="of-leg-rank">of {{element.os}}</div>
+                                    </td>
+                                    <td>
+                                        {{ element.legs.t1.t != 99999 ? (element.legs.t1.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Bike</b></td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.b.ar}} </div>
+                                        <div class="of-leg-rank">of {{element.as}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.b.gr}} </div>
+                                        <div class="of-leg-rank">of {{element.gs}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.b.or}} </div>
+                                        <div class="of-leg-rank">of {{element.os}}</div>
+                                    </td>
+                                    <td>
+                                        {{ element.legs.b.t != 99999 ? (element.legs.b.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>T2</b></td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.t2.ar}} </div>
+                                        <div class="of-leg-rank">of {{element.as}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.t2.gr}} </div>
+                                        <div class="of-leg-rank">of {{element.gs}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.t2.or}} </div>
+                                        <div class="of-leg-rank">of {{element.os}}</div>
+                                    </td>
+                                    <td>
+                                        {{ element.legs.t2.t != 99999 ? (element.legs.t2.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Run</b></td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.r.ar}} </div>
+                                        <div class="of-leg-rank">of {{element.as}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.r.gr}} </div>
+                                        <div class="of-leg-rank">of {{element.gs}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.legs.r.or}} </div>
+                                        <div class="of-leg-rank">of {{element.os}}</div>
+                                    </td>
+                                    <td>
+                                        {{ element.legs.r.t != 99999 ? (element.legs.r.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Finish</b></td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.ar}} </div>
+                                        <div class="of-leg-rank">of {{element.as}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.gr}} </div>
+                                        <div class="of-leg-rank">of {{element.gs}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="leg-rank"> {{element.or}} </div>
+                                        <div class="of-leg-rank">of {{element.os}}</div>
+                                    </td>
+                                    <td>
+                                        {{ element.t != 99999 ? (element.t * 1000 | date:'H:mm:ss':'UTC') : '-'}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="expanded-athlete-row"
+                    [class.athlete-expanded-row]="expandedElement === element"
+                    (click)="expandedElement = expandedElement === element ? null : element">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="athlete-expanded-detail-row"></tr>
+            </table>
+        <!-- </div> -->
     </div>
 </div>

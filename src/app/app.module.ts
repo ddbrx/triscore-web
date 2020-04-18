@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, RouterModule, Routes } from '@angular/router';
 
@@ -22,6 +21,7 @@ import { DemoMaterialModule } from './utils/material-module';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MarkdownModule } from 'ngx-markdown';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 
 const appRoutes: Routes = [
@@ -55,11 +55,12 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
+    DeviceDetectorModule.forRoot(),
+    MarkdownModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }
     ),
-    MarkdownModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,

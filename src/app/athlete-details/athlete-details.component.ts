@@ -8,6 +8,7 @@ import { GetCountryFlag } from '../utils/country'
 import { GetScoreColor, GetScoreStyle, GetFirstLetterStyle, GetScoreLevel, GetScoreLevelShort } from '../utils/score-color'
 import { TriscoreAthlete, TriscoreApi, TriscoreRaceResult } from "../triscore-api/triscore-api";
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-athlete-details',
@@ -26,6 +27,8 @@ export class AthleteDetailsTableComponent implements OnInit {
 
   triscoreApi: TriscoreApi | null;
   athlete$: Observable<TriscoreAthlete>;
+  maxScore: number | null;
+
   plotData: any;
 
   swimAvgPerf: number;
@@ -35,8 +38,7 @@ export class AthleteDetailsTableComponent implements OnInit {
 
   expandedElement: TriscoreRaceResult | null;
 
-  displayedColumns: string[] = [
-    'index', 'date', 'race', 'age-group', 'finish', 'size', 'rank', 'seed', 'time-rank', 'delta', 'score', 'level'];
+  displayedColumns: string[];
 
   margin = { top: 40, right: 20, bottom: 30, left: 40 };
 
@@ -79,8 +81,81 @@ export class AthleteDetailsTableComponent implements OnInit {
   constructor(
     private _httpClient: HttpClient,
     private route: ActivatedRoute,
+    private deviceService: DeviceDetectorService,
   ) {
-    this.gaugeValueFormatting = this.formatGaugeValue.bind(this)
+    this.gaugeValueFormatting = this.formatGaugeValue.bind(this);
+    this.displayedColumns = this.getDeviceDisplayedColumns();
+  }
+
+  getDeviceDisplayedColumns() {
+    if (this.deviceService.isMobile()) {
+      return ['race', 'age-group', 'finish', 'delta', 'score', 'level']
+    }
+    return ['index', 'race', 'date', 'age-group', 'size', 'rank', 'finish', 'delta', 'score', 'level'];
+  }
+
+  getDeviceAthleteSummaryStyle() {
+    if (this.deviceService.isMobile()) {
+      return {};
+    }
+    return {
+      width: '30%',
+      position: 'relative',
+      float: 'left',
+      'margin-left': '15%',
+      'padding-top': '4%',
+    };
+  }
+
+  getDeviceAthleteDescriptionStyle() {
+    if (this.deviceService.isMobile()) {
+      return {
+        'margin-left': '5%',
+        width: '45%',
+        position: 'relative',
+        float: 'left',
+      }
+    }
+    return {
+      'margin-left': '20%',
+      'padding-bottom': '5%',
+    }
+  }
+
+  getDeviceAthleteStatsStyle() {
+    if (this.deviceService.isMobile()) {
+      return {
+        'margin-left': '50%',
+        'margin-top': '5%',
+        'padding-top': '5%',
+        height: '50px',
+        width: '190px',
+      };
+    }
+    return {
+      height: '60px',
+      width: '240px',
+    }
+  }
+
+  getDeviceAthleteGaugeStyle() {
+    if (this.deviceService.isMobile()) {
+      return {
+        'margin-left': '3%',
+        width: '350px',
+        height: '250px',
+      };
+    }
+    return {
+      'margin-left': '50%',
+      'padding-top': '1%',
+      width: '350px',
+      height: '300px',
+    }
+  }
+
+  isMobile() {
+    return this.deviceService.isMobile();
   }
 
   formatGaugeValue(value): string {
@@ -113,7 +188,7 @@ export class AthleteDetailsTableComponent implements OnInit {
 
   getRaceStatsColorScheme(athlete: TriscoreAthlete) {
     return {
-      domain: [GetScoreColor(athlete.s), '#ada8a8' ],
+      domain: [GetScoreColor(athlete.s), '#ada8a8'],
       selectable: true,
       group: 'Ordinal',
     };
@@ -135,9 +210,18 @@ export class AthleteDetailsTableComponent implements OnInit {
     return GetScoreLevelShort(score);
   }
 
+  getDeviceScoreLevel(score: number) {
+    if (this.deviceService.isMobile()) {
+      return GetScoreLevelShort(score);
+    }
+    return GetScoreLevel(score);
+  }
 
   getMaxScore(athlete: TriscoreAthlete) {
-    return Math.max.apply(Math, athlete.h.map(x => Math.max(x.ns, x.ps)));
+    if (!this.maxScore) {
+      this.maxScore = Math.max.apply(Math, athlete.h.map(x => Math.max(x.ns, x.ps)));
+    }
+    return this.maxScore;
   }
 
   getTotalRacesCount(athlete: TriscoreAthlete) {
@@ -264,7 +348,8 @@ export class AthleteDetailsTableComponent implements OnInit {
               'race': result.race,
               'group': result.a,
               'size': result.as,
-              'rank': result.ar
+              'rank': result.ar,
+              'delta': result.da
             }
           };
 
