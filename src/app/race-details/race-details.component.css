@@ -3,91 +3,29 @@ table {
 }
 
 .race-details-container {
-  position: relative;
-  overflow: auto;
-}
-
-.race-date-location {
-  font-weight: lighter;
+  margin: auto;
 }
 
 .race-details-section {
-  width: 80%;
-  height: 200px;
   margin: auto;
-  padding: 10px;
-  margin-bottom: 40px;
+  padding-top: 10px;
 }
 
-.race-details-summary {
-  width: 38%;
-  margin-left: 6%;
-  padding-top: 3%;
-  position: relative;
-  float: left;
-}
-
-.race-details-summary h2 {
-  margin-bottom: 0;
-}
-
-.race-details-summary p {
-  margin-top: 0;
-}
-
-.race-elevation-plot {
-  height: 60px;
-  width: 250px;
-  margin-left: 0%;
-}
-
-.race-participants-plot {
-  margin-left: 45%;
-  margin-top: 5%;
-  width: 500px;
-  height: 180px;
-  line-height: 32px;
-}
-
-.race-details-results {
+.race-results-table {
   margin: auto;
-  padding: 7px;
-  width: 80%;
+  text-align: center;
 }
 
-.score-table-container {
-  display: flex;
-  flex-direction: column;
-  min-width: 100px;
+.name-form-field {
+  width: 33%;
 }
 
-.mat-table {
-  text-align: left;
-  overflow: auto;
-  max-height: 300px;
+.country-form-field {
+  width: 30%;
 }
 
-.mat-column-overall-rank,
-.mat-column-size,
-.mat-column-age-rank {
-  max-width: 20px;
-}
-
-.mat-column-name {
-  max-width: 150px;
-  text-overflow: ellipsis;
-}
-
-.mat-column-country,
-.mat-column-age-group,
-.mat-column-finish {
-  max-width: 50px;
-}
-
-.mat-form-field {
-  font-size: 14px;
-  width: 100%;
-  border: 1px;
+.age-group-form-field {
+  width: 37%;
 }
 
 .invalid-input {
@@ -95,73 +33,58 @@ table {
   opacity: 0.3;
 }
 
-.rated-athlete {
-  text-decoration: none !important;
-  font-weight: bold;
-  display: inline-block;
+.mat-table {
+  text-align: center;
+  overflow: auto;
+  max-height: 300px;
 }
 
-.loading-shade {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.mat-cell:first-of-type {
+  padding-left: 12px;
 }
 
-.api-rate-limit-reached {
-  color: #980000;
-  max-width: 360px;
+.mat-header-cell:first-of-type {
+  padding-left: 12px;
+}
+
+.mat-header-cell {
   text-align: center;
 }
 
-tr.example-detail-row {
-  height: 0;
+.mat-cell:last-of-type {
+  padding-right: 0px;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
+.mat-header-cell:last-of-type {
+  padding-right: 0px;
 }
 
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #efefef;
-  color: #b4b0b0
+.mat-column-rank {
+  padding-right: 8px;
 }
 
-.example-element-row td {
-  border-bottom-width: 0;
+.mat-column-name {
+  text-align: left;
 }
 
-.example-element-detail {
-  overflow: hidden;
-  display: flex;
+.mat-column-age-rank {
+  min-width: 35px;
 }
 
-.example-element-description {
-  padding: 16px;
+.mat-column-size {
+  min-width: 30px;
 }
 
-.example-element-description-attribution {
-  opacity: 0.5;
+.mat-column-age-group {
+  min-width: 60px;
+  padding-left: 10px;
 }
 
-.total-detail {
-  height: 18px;
-  width: 80%;
-  margin: 0px auto 4px;
-}
-
-.of-total-detail {
-  font-weight: lighter;
-  font-size: 0.75em;
-  height: 11px;
-  color: #7c807bd9;
-  margin: 0px auto;
+.mat-column-finish {
+  /* min-width: 60px; */
+  /* padding-left: 10px; */
+  text-align: left;
+  min-width: 30px;
 }
 
 .race-result-detail {
@@ -180,19 +103,23 @@ tr.example-element-row:not(.example-expanded-row):active {
   overflow: hidden;
 }
 
-.name-form-field {
-  width: 44%;
+.expanded-race-row td {
+  border-bottom-width: 0;
 }
 
-.country-form-field {
-  width: 36%;
+.expanded-race-data {
+  overflow: hidden;
+  display: flex;
 }
 
-.age-group-form-field {
-  width: 20%;
+tr.expanded-race-detail {
+  height: 0;
 }
 
-.invalid-input {
-  font-size: smaller;
-  opacity: 0.3;
+tr.expanded-race-row:not(.race-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.expanded-race-row:not(.race-expanded-row):active {
+  background: #efefef;
 }

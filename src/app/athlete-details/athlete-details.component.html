@@ -1,5 +1,4 @@
-<div class="athlete-details-container mat-elevation-z8">
-
+<div class="athlete-details-container">
     <div *ngIf="athlete$ | async as athlete">
         <div class="athlete-details-section">
             <div [ngStyle]="getDeviceAthleteSummaryStyle()">
@@ -49,10 +48,10 @@
         </div>
 
         <div *ngIf="!isMobile()" class="athlete-score-plot">
-            <ngx-charts-line-chart [scheme]="colorScheme" [legend]="legend"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis"
-                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="plotData"
-                [autoScale]="autoScale" [gradient]="gradient" [rangeFillOpacity]="0.1">
+            <ngx-charts-line-chart [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="plotData" [autoScale]="autoScale"
+                [gradient]="gradient" [rangeFillOpacity]="0.1">
 
                 <ng-template #tooltipTemplate let-model="model">
                     <div class="tooltip-template">
@@ -73,8 +72,8 @@
             </ngx-charts-line-chart>
         </div>
 
-        <!-- <div class="athlete-races-container"> -->
-            <table mat-table [dataSource]="athlete.h" multiTemplateDataRows class="race-history-table">
+        <div class="athlete-races-table">
+            <table mat-table [dataSource]="athlete.h.slice().reverse()" multiTemplateDataRows class="race-history-table">
                 <ng-container matColumnDef="index">
                     <th mat-header-cell *matHeaderCellDef>#</th>
                     <td mat-cell *matCellDef="let row">{{row.index}}</td>
@@ -156,11 +155,6 @@
                     <td mat-cell *matCellDef="let row">
                         <a [routerLink]="['/about']" fragment="level" class="invisible-link"
                             [ngStyle]="getScoreStyle(row.ns)">
-
-
-                            <!-- <span
-                            [ngStyle]="getFirstLetterStyle(row.ns)">{{getLevelChangeSymbol(row.ps, row.ns)}}{{getScoreLevel(row.ns).substr(0, 1)}}</span>{{getScoreLevel(row.ns).substr(1)}} -->
-
                             <span
                                 [ngStyle]="getFirstLetterStyle(row.ns)">{{getLevelChangeSymbol(row.ps, row.ns)}}{{getDeviceScoreLevel(row.ns).substr(0, 1)}}</span>{{getDeviceScoreLevel(row.ns).substr(1)}}
                         </a>
@@ -169,7 +163,7 @@
 
                 <ng-container matColumnDef="expandedDetail">
                     <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-                        <div class="expanded-athlete-detail"
+                        <div class="expanded-athlete-data"
                             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
 
                             <table class="result-legs">
@@ -296,8 +290,8 @@
                     [class.athlete-expanded-row]="expandedElement === element"
                     (click)="expandedElement = expandedElement === element ? null : element">
                 </tr>
-                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="athlete-expanded-detail-row"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="expanded-athlete-detail"></tr>
             </table>
-        <!-- </div> -->
+        </div>
     </div>
 </div>

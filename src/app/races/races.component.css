@@ -104,23 +104,23 @@ table {
   text-align: center;
 }
 
-tr.example-detail-row {
+tr.expanded-race-detail {
   height: 0;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
+tr.expanded-race-row:not(.example-expanded-row):hover {
   background: whitesmoke;
 }
 
-tr.example-element-row:not(.example-expanded-row):active {
+tr.expanded-race-row:not(.example-expanded-row):active {
   background: #efefef;
 }
 
-.example-element-row td {
+.expanded-race-row td {
   border-bottom-width: 0;
 }
 
-.example-element-detail {
+.expanded-race-data {
   overflow: hidden;
   display: flex;
 }

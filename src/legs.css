@@ -1,0 +1,50 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+body {
+  font-family: "Roboto", Arial, sans-serif;
+  font-weight: normal;
+  margin: auto;
+}
+
+.invisible-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.athlete-level-short {
+  position: relative;
+  font-size: x-small;
+  font-weight: 100;
+}
+
+.result-legs {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+}
+
+.result-legs tr {
+  border: solid;
+  border-width: 1px 0;
+  border-color: lightgray;
+}
+
+.result-legs td, .result-legs th {
+  padding: 0.4em;
+  font-size: medium;
+  text-align: center;
+  overflow: hidden;
+}
+
+.leg-rank {
+  height: 18px;
+  width: 80%;
+  margin: 0px auto 4px;
+}
+
+.of-leg-rank {
+  font-weight: lighter;
+  font-size: 0.75em;
+  height: 11px;
+  color: #7c807bd9;
+  margin: 0px auto;
+}

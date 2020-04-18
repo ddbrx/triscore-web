@@ -166,7 +166,7 @@ export interface TriscoreRunInfo {
 export interface TriscoreRaceStats {
     t: number;
     s: number;
-    p: number;
+    p: string;
     m: number;
     f: number;
 }

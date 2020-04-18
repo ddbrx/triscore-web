@@ -13,6 +13,7 @@ import { FormControl } from '@angular/forms';
 import { TriscoreApi, TriscoreRaceResult, TriscoreRaceInfo } from "../triscore-api/triscore-api";
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AgeGroupCategory, GetAgeGroupCategories, IsValidAgeGroup } from "../utils/age-groups"
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-race-details',
@@ -27,7 +28,7 @@ import { AgeGroupCategory, GetAgeGroupCategories, IsValidAgeGroup } from "../uti
   ],
 })
 export class RaceDetailsTableComponent implements OnInit {
-  displayedColumns: string[] = ['overall-rank', 'name', 'country', 'age-group', 'finish', 'size', 'age-rank'];
+  displayedColumns: string[] = ['rank', 'name', 'country', 'age-group', 'size', 'age-rank', 'finish'];
 
   ageGroupControl = new FormControl();
   ageGroupCategories: AgeGroupCategory[];
@@ -84,11 +85,64 @@ export class RaceDetailsTableComponent implements OnInit {
   constructor(
     private _httpClient: HttpClient,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private deviceService: DeviceDetectorService,
   ) {
     this.countryNames = GetCountryNames();
     this.filteredCountryNames = observableOf(this.countryNames);
     this.ageGroupCategories = GetAgeGroupCategories();
+  }
+
+  getRaceDetailsSummaryStyle() {
+    if (this.deviceService.isMobile()) {
+      return {
+        'padding-top': '3%',
+        'position': 'relative',
+        'text-align': 'center',
+      }
+    }
+    return {
+      'width': '38%',
+      'margin-left': '12%',
+      'padding-top': '4%',
+      'position': 'relative',
+      'float': 'left',
+    }
+  }
+
+  getRaceElevationStyle() {
+    if (this.deviceService.isMobile()) {
+      return {
+        'height': '60px',
+        'width': '250px',
+        'margin-left': '20%',
+      }
+    }
+    return {
+      'height': '60px',
+      'width': '250px',
+    };
+  }
+
+  getRaceParticipantsPlotStyle() {
+    if (this.deviceService.isMobile()) {
+      return {
+        'margin-left': '10%',
+        'margin-top': '5%',
+        'margin-bottom': '5%',
+        'width': '320px',
+        'height': '160px',
+        'line-height': '32px',
+      }
+    }
+    return {
+      'margin-left': '50%',
+      'margin-top': '5%',
+      'margin-bottom': '5%',
+      'width': '360px',
+      'height': '180px',
+      'line-height': '32px',
+    };
   }
 
   ngOnInit() {
@@ -102,16 +156,23 @@ export class RaceDetailsTableComponent implements OnInit {
       }
       ),
       map(raceDetailsResponse => {
-        this.raceElevationPlotData = [
-          {
-            'name': 'Bike Elevation',
-            'value': Math.round(raceDetailsResponse.data.distance.b.e)
-          },
-          {
-            'name': 'Run Elevation ',
-            'value': Math.round(raceDetailsResponse.data.distance.r.e)
-          }
-        ];
+        this.raceElevationPlotData = [];
+        if (raceDetailsResponse.data.distance.b && raceDetailsResponse.data.distance.b.e) {
+          this.raceElevationPlotData.push(
+            {
+              'name': 'Bike Elevation m',
+              'value': Math.round(raceDetailsResponse.data.distance.b.e),
+            }
+          );
+        }
+        if (raceDetailsResponse.data.distance.r && raceDetailsResponse.data.distance.r.e) {
+          this.raceElevationPlotData.push(
+            {
+              'name': 'Run Elevation m',
+              'value': Math.round(raceDetailsResponse.data.distance.r.e),
+            }
+          );
+        }
         return raceDetailsResponse.data;
       })
     );

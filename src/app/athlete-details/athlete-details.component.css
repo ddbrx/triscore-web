@@ -42,7 +42,7 @@ ul {
   padding: 0;
 }
 
-.athlete-races-container {
+.athlete-races-table {
   margin: auto;
 }
 
@@ -55,11 +55,17 @@ ul {
 }
 
 .mat-cell:last-of-type {
-  padding-left: 16px;
+  padding-right: 16px;
+  padding-left: 0px;
 }
 
 .mat-header-cell:last-of-type {
-  padding-left: 16px;
+  padding-right: 16px;
+  padding-left: 0px;
+}
+
+.mat-column-name {
+  text-overflow: ellipsis;
 }
 
 .mat-column-size,
@@ -76,7 +82,7 @@ ul {
 }
 
 .mat-column-age-group {
-  min-width: 50px;
+  min-width: 60px;
   text-align: center;
 }
 
@@ -97,12 +103,12 @@ ul {
   border-bottom-width: 0;
 }
 
-.expanded-athlete-detail {
+.expanded-athlete-data {
   overflow: hidden;
   display: flex;
 }
 
-tr.athlete-expanded-detail-row {
+tr.expanded-athlete-detail {
   height: 0;
 }
 
@@ -112,37 +118,4 @@ tr.expanded-athlete-row:not(.athlete-expanded-row):hover {
 
 tr.expanded-athlete-row:not(.athlete-expanded-row):active {
   background: #efefef;
-}
-
-.result-legs {
-  border-collapse: collapse;
-  text-align: center;
-  width: 100%;
-}
-
-.result-legs tr {
-  border: solid;
-  border-width: 1px 0;
-  border-color: lightgray;
-}
-
-.result-legs td, .result-legs th {
-  padding: 0.4em;
-  font-size: medium;
-  text-align: center;
-  overflow: hidden;
-}
-
-.leg-rank {
-  height: 18px;
-  width: 80%;
-  margin: 0px auto 4px;
-}
-
-.of-leg-rank {
-  font-weight: lighter;
-  font-size: 0.75em;
-  height: 11px;
-  color: #7c807bd9;
-  margin: 0px auto;
 }
