@@ -172,9 +172,10 @@ export interface TriscoreRaceStats {
 }
 
 export class TriscoreApi {
-    private kHost: string = 'https://triscore.me/api/v1';
+    private kHost: string = 'https://triscore.me';
     // private kHost: string = 'http://127.0.0.1:5000';
     // private kHost: string = 'http://static.135.98.202.116.clients.your-server.de';
+    private kApiVersion: string = '/api/v1';
 
     constructor(private _httpClient: HttpClient) { }
 
@@ -186,7 +187,7 @@ export class TriscoreApi {
         }
         var from: number = pageIndex * pageSize;
         var to: number = from + pageSize - 1;
-        var requestUrl = `${this.kHost}/athletes?sort=${sort}&order=${order}&from=${from}&to=${to}`;
+        var requestUrl = `${this.kHost}${this.kApiVersion}/athletes?sort=${sort}&order=${order}&from=${from}&to=${to}`;
         if (name.length > 0) {
             requestUrl += `&name=${name}`;
         }
@@ -201,7 +202,7 @@ export class TriscoreApi {
     }
 
     getAthleteDetails(profile: string): Observable<TriscoreAthleteDetailsResponse> {
-        var requestUrl = `${this.kHost}/athlete-details?id=${profile}`;
+        var requestUrl = `${this.kHost}${this.kApiVersion}/athlete-details?id=${profile}`;
         return this._httpClient.get<TriscoreAthleteDetailsResponse>(requestUrl);
     }
 
@@ -212,7 +213,7 @@ export class TriscoreApi {
         }
         var from: number = pageIndex * pageSize;
         var to: number = from + pageSize - 1;
-        var requestUrl = `${this.kHost}/races?sort=${sort}&order=${order}&from=${from}&to=${to}&name=${name}&type=${raceType}`;
+        var requestUrl = `${this.kHost}${this.kApiVersion}/races?sort=${sort}&order=${order}&from=${from}&to=${to}&name=${name}&type=${raceType}`;
         if (country.length > 0) {
             var countryFifaCode = GetCountryFifaCodeByName(country);
             requestUrl += `&country=${countryFifaCode}`;
@@ -222,7 +223,7 @@ export class TriscoreApi {
 
 
     getRaceInfo(name: string, date: string): Observable<TriscoreRaceInfoResponse> {
-        var requestUrl = `${this.kHost}/race-info?name=${name}&date=${date}`;
+        var requestUrl = `${this.kHost}${this.kApiVersion}/race-info?name=${name}&date=${date}`;
         return this._httpClient.get<TriscoreRaceInfoResponse>(requestUrl);
     }
 
@@ -230,7 +231,7 @@ export class TriscoreApi {
         var skip = pageIndex * pageSize;
         var limit = pageSize;
 
-        var requestUrl = `${this.kHost}/race-results?name=${race_name}&date=${race_date}&athlete=${athlete}&skip=${skip}&limit=${limit}&sort=${sort}&order=${order}&group=${ageGroup}`;
+        var requestUrl = `${this.kHost}${this.kApiVersion}/race-results?name=${race_name}&date=${race_date}&athlete=${athlete}&skip=${skip}&limit=${limit}&sort=${sort}&order=${order}&group=${ageGroup}`;
 
         if (country.length > 0) {
             var countryFifaCode = GetCountryFifaCodeByName(country);

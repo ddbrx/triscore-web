@@ -1,21 +1,3 @@
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-body {
-  font-family: "Roboto", Arial, sans-serif;
-  font-weight: normal;
-  margin: auto;
-}
-
-.invisible-link {
-  color: inherit;
-  text-decoration: none;
-}
-
-.athlete-level-short {
-  position: relative;
-  font-size: x-small;
-  font-weight: 100;
-}
-
 .result-legs {
   border-collapse: collapse;
   text-align: center;
