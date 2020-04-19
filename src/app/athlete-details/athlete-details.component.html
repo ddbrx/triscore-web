@@ -22,7 +22,7 @@
                         <p>Max: {{getMaxScore(athlete)}}
                             <a [routerLink]="['/about']" fragment="level" class="invisible-link">
                                 <span
-                                    [ngStyle]="getFirstLetterStyle(athlete.s)">{{getScoreLevel(getMaxScore(athlete)).substr(0, 1)}}</span>
+                                    [ngStyle]="getFirstLetterStyle(getMaxScore(athlete))">{{getScoreLevel(getMaxScore(athlete)).substr(0, 1)}}</span>
                                 <span
                                     [ngStyle]="getScoreStyle(getMaxScore(athlete))">{{getScoreLevel(getMaxScore(athlete)).substr(1)}}</span>
                             </a>
