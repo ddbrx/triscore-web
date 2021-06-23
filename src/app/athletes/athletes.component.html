@@ -67,7 +67,7 @@
 
       <ng-container matColumnDef="country">
         <th mat-header-cell *matHeaderCellDef>Country</th>
-        <td mat-cell *matCellDef="let athlete">{{getCountryFlag(athlete.c)}} {{athlete.c}}</td>
+        <td mat-cell *matCellDef="let athlete">{{getCountryFlagAndFifa(athlete.c)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="age-group">

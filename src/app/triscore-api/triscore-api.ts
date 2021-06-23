@@ -172,8 +172,9 @@ export interface TriscoreRaceStats {
 }
 
 export class TriscoreApi {
-    private kHost: string = 'https://triscore.me';
+    // private kHost: string = 'https://triscore.me';
     // private kHost: string = 'http://127.0.0.1:5000';
+    private kHost: string = 'http://151.248.125.89:5000';
     // private kHost: string = 'http://static.135.98.202.116.clients.your-server.de';
     private kApiVersion: string = '/api/v1';
 

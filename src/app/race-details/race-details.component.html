@@ -8,8 +8,7 @@
                         {{raceInfo.name}}
                     </a>
                 </h2>
-                <p class="race-date-location">{{raceInfo.date}} {{getCountryFlag(raceInfo.location.c)}}
-                    {{raceInfo.location.d}}</p>
+                <p class="race-date-location">{{raceInfo.date}} {{getCountryFlagAndFifa(raceInfo.location.c)}} {{raceInfo.location.d}}</p>
 
                 <div [ngStyle]="getRaceElevationStyle()">
                     <ngx-charts-bar-horizontal [scheme]="raceElevationPlotColorScheme" [results]="raceElevationPlotData"
@@ -88,9 +87,7 @@
 
             <ng-container matColumnDef="country">
                 <th mat-header-cell *matHeaderCellDef>Country</th>
-                <td mat-cell *matCellDef="let athlete">
-                    {{getCountryFlag(athlete.c)}}
-                    {{athlete.c}}</td>
+                <td mat-cell *matCellDef="let athlete">{{getCountryFlagAndFifa(athlete.c)}}</td>
             </ng-container>
 
             <ng-container matColumnDef="age-group">

@@ -8,29 +8,29 @@ export function IsValidCountryName(word: string): boolean {
   return word.trim().length == 0 || countryCodes.some(country => country.name == word);
 }
 
-export function GetCountryFifaCodeByName(countryName: string): string {
+export function GetCountryFifaCodeByName(countryName: string): number {
   if (!countryName || countryName.trim().length == 0) {
-    return '';
+    return 0;
   }
 
   var country = countryCodes.find(c => c.name == countryName);
   if (!country) {
     console.error('country not found: ' + countryName);
-    return '';
+    return 0;
   }
-  return country.fifa;
+  return country.num;
 }
 
-export function GetCountryFlag(countryFifaCode: string): string {
-  if (!countryFifaCode) {
+export function GetCountryFlagAndFifa(countryIsoNum): string {
+  if (!countryIsoNum) {
     return '';
   }
 
-  var country = countryCodes.find(c => c['fifa'] == countryFifaCode);
+  var country = countryCodes.find(c => c.num == countryIsoNum);
   if (!country) {
-    console.error('no country found fifa code: ' + countryFifaCode);
-    return countryFifaCode;
+    console.error('no country found iso num: ' + countryIsoNum);
+    return '';
   }
 
-  return country.flag;
+  return country.flag + country.fifa;
 }

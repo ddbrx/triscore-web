@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { Observable, of as observableOf, merge } from 'rxjs';
 import { catchError, map, switchMap, startWith, delay } from 'rxjs/operators';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { GetCountryFlag, GetCountryNames, IsValidCountryName } from '../utils/country'
+import { GetCountryFlagAndFifa, GetCountryNames, IsValidCountryName } from '../utils/country'
 import { GetScoreStyle, GetFirstLetterStyle, GetScoreLevelShort } from '../utils/score-color'
 import { FormControl } from '@angular/forms';
 import { TriscoreApi, TriscoreRaceResult, TriscoreRaceInfo } from "../triscore-api/triscore-api";
@@ -400,8 +400,8 @@ export class RaceDetailsTableComponent implements OnInit {
     return this.countryNames.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  getCountryFlag(countryName: string): string {
-    return GetCountryFlag(countryName);
+  getCountryFlagAndFifa(countryName: string): string {
+    return GetCountryFlagAndFifa(countryName);
   }
 
   getScoreStyle(score: number) {

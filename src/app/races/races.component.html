@@ -62,7 +62,7 @@
 
             <ng-container matColumnDef="country">
                 <th mat-header-cell *matHeaderCellDef>Country</th>
-                <td mat-cell *matCellDef="let race">{{getCountryFlag(race.location.c)}} {{race.location.c}}</td>
+                <td mat-cell *matCellDef="let race">{{getCountryFlagAndFifa(race.location.c)}}</td>
             </ng-container>
 
             <ng-container matColumnDef="type">
@@ -81,7 +81,7 @@
             </ng-container>
 
             <ng-container matColumnDef="percent">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>%</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Success%</th>
                 <td mat-cell *matCellDef="let race">{{race.stats.p}}</td>
             </ng-container>
 

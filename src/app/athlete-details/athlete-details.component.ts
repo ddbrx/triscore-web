@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap, first } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { GetCountryFlag } from '../utils/country'
+import { GetCountryFlagAndFifa } from '../utils/country'
 import { GetScoreColor, GetScoreStyle, GetFirstLetterStyle, GetScoreLevel, GetScoreLevelShort } from '../utils/score-color'
 import { TriscoreAthlete, TriscoreApi, TriscoreRaceResult } from "../triscore-api/triscore-api";
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -165,8 +165,8 @@ export class AthleteDetailsTableComponent implements OnInit {
     return value.toString() + '%';
   }
 
-  getCountryFlag(countryName: string): string {
-    return GetCountryFlag(countryName);
+  getCountryFlagAndFifa(countryName: string): string {
+    return GetCountryFlagAndFifa(countryName);
   }
 
   getColorScheme(score: number) {
