@@ -16,7 +16,6 @@ import { RacesTableComponent } from './races/races.component';
 import { RaceDetailsTableComponent } from './race-details/race-details.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { AboutPageComponent } from './about/about.component';
-import { TrainingPageComponent } from './training/training.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DemoMaterialModule } from './utils/material-module';
 
