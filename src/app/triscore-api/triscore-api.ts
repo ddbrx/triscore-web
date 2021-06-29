@@ -172,17 +172,15 @@ export interface TriscoreRaceStats {
 }
 
 export class TriscoreApi {
-    // private kHost: string = 'https://triscore.me';
+    private kHost: string = 'http://triscore.me';
     // private kHost: string = 'http://127.0.0.1:5000';
-    private kHost: string = 'http://151.248.125.89:5000';
-    // private kHost: string = 'http://static.135.98.202.116.clients.your-server.de';
+    // private kHost: string = 'http://151.248.125.89:5000';
     private kApiVersion: string = '/api/v1';
 
     constructor(private _httpClient: HttpClient) { }
 
     getAthletes(pageIndex: number, pageSize: number, sort: string, order: string, name: string, country: string, ageGroup: string):
         Observable<TriscoreAthletesResponse> {
-        // console.log('getAthletes: pageIndex: ' + pageIndex + ' pageSize: ' + pageSize + ' sort: ' + sort + ' order: ' + order + ' name: ' + name + ' country: ' + country);
         if (pageSize > MAX_PAGE_SIZE) {
             pageSize = MAX_PAGE_SIZE;
         }
@@ -208,7 +206,6 @@ export class TriscoreApi {
     }
 
     getRaces(pageIndex: number, pageSize: number, sort: string, order: string, name: string, country: string, raceType: string): Observable<TriscoreRacesResponse> {
-        // console.log('getRaces: pageIndex: ' + pageIndex + ' pageSize: ' + pageSize + ' sort: ' + sort + ' order: ' + order + ' name: ' + name + ' country: ' + country);
         if (pageSize > MAX_PAGE_SIZE) {
             pageSize = MAX_PAGE_SIZE;
         }
